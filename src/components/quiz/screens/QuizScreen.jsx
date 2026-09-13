@@ -147,6 +147,12 @@ export function QuizScreen() {
 							{currentQuestion.text}
 						</h2>
 
+						{currentQuestion.codeBlock && (
+							<pre className="question__code">
+								<code>{currentQuestion.codeBlock}</code>
+							</pre>
+						)}
+
 						<Answers
 							answers={shuffledAnswers}
 							correctAnswer={correctAnswer}

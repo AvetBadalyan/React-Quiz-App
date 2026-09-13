@@ -9,6 +9,7 @@
 // Fonts
 $font-body: 'Roboto', sans-serif;
 $font-heading: 'Roboto Condensed', sans-serif;
+$font-mono: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
 
 // Backgrounds / surfaces (dark → light purple)
 $color-bg: #1d0433; // page background
@@ -360,8 +361,12 @@ body {
 		grid-template-columns: repeat(2, 1fr);
 		gap: 1rem;
 
-		@media (min-width: 600px) {
-			grid-template-columns: repeat(4, 1fr);
+		@media (min-width: 500px) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		@media (min-width: 700px) {
+			grid-template-columns: repeat(5, 1fr);
 		}
 	}
 
@@ -999,8 +1004,27 @@ body {
 		font-family: $font-body;
 		font-size: 1.5rem;
 		font-weight: normal;
-		margin: 0.5rem 0 2.5rem 0;
+		margin: 0.5rem 0 1.25rem 0;
 		color: $color-text-muted;
+	}
+
+	.question__code {
+		margin: 0 0 2rem 0;
+		padding: 1rem 1.25rem;
+		background: rgba(0, 0, 0, 0.35);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 8px;
+		text-align: left;
+		overflow-x: auto;
+
+		code {
+			display: block;
+			font-family: $font-mono;
+			font-size: 0.875rem;
+			line-height: 1.6;
+			color: $color-text;
+			white-space: pre;
+		}
 	}
 }
 
@@ -1154,7 +1178,7 @@ body {
 	}
 
 	&__stack {
-		font-family: monospace;
+		font-family: $font-mono;
 		font-size: 0.75rem;
 		background: rgba(0, 0, 0, 0.3);
 		padding: 1rem;

@@ -78,5 +78,23 @@ export const CATEGORY_CONFIG = {
 		icon: '⚛️',
 		topics: ['hooks', 'components', 'state', 'jsx'],
 		color: '#61dafb'
+	},
+	jstricky: {
+		id: 'jstricky',
+		label: 'JS Tricky',
+		icon: '🧠',
+		topics: [
+			'scope',
+			'prototype',
+			'types',
+			'arrays',
+			'event-loop',
+			'promises',
+			'this',
+			'es6',
+			'hoisting',
+			'closures'
+		],
+		color: '#f0a500'
 	}
 }

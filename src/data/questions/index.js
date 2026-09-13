@@ -9,16 +9,18 @@
  * - getQuestionsByCategory(category): Returns questions for a specific category
  */
 
-import htmlQuestions from './html.js'
 import cssQuestions from './css.js'
+import htmlQuestions from './html.js'
 import javascriptQuestions from './javascript.js'
+import jstrickyQuestions from './jstricky.js'
 import reactQuestions from './react.js'
 
 export const questionBank = {
 	html: htmlQuestions,
 	css: cssQuestions,
 	javascript: javascriptQuestions,
-	react: reactQuestions
+	react: reactQuestions,
+	jstricky: jstrickyQuestions
 }
 
 /**
