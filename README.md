@@ -30,8 +30,8 @@ An interactive frontend developer quiz app built with React 19. Tests knowledge 
 ## Getting started
 
 ```bash
-git clone https://github.com/AvetBadalyan/React-Quiz-App.git
-cd React-Quiz-App
+git clone https://github.com/AvetBadalyan/Frontend-Interview-Quiz.git
+cd Frontend-Interview-Quiz
 npm install
 npm run dev
 ```
