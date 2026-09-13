@@ -38,7 +38,6 @@ export const Button = forwardRef(function Button(
 			whileTap={{ scale: disabled ? 1 : 0.95 }}
 			disabled={disabled}
 			onClick={onClick}
-			aria-disabled={disabled || undefined}
 			{...props}
 		>
 			{children}

@@ -5,9 +5,16 @@ import { Component } from 'react'
  */
 function ErrorFallback({ error, errorInfo, onReset, onReload }) {
 	return (
-		<div className="error-boundary" role="alert" aria-live="assertive">
+		<div
+			className="error-boundary"
+			role="alert"
+			aria-live="assertive"
+		>
 			<div className="error-boundary__content">
-				<div className="error-boundary__icon" aria-hidden="true">
+				<div
+					className="error-boundary__icon"
+					aria-hidden="true"
+				>
 					⚠️
 				</div>
 				<h2 className="error-boundary__title">Something went wrong</h2>
@@ -15,7 +22,7 @@ function ErrorFallback({ error, errorInfo, onReset, onReload }) {
 					We're sorry, but an unexpected error occurred. Please try again.
 				</p>
 
-				{process.env.NODE_ENV === 'development' && error && (
+				{import.meta.env.DEV && error && (
 					<details className="error-boundary__details">
 						<summary>Error Details</summary>
 						<pre className="error-boundary__stack">
@@ -46,9 +53,6 @@ function ErrorFallback({ error, errorInfo, onReset, onReload }) {
 	)
 }
 
-// State and handlers outside the class to minimize "this" usage
-let boundaryState = { hasError: false, error: null, errorInfo: null }
-
 function resetError(component) {
 	component.setState({ hasError: false, error: null, errorInfo: null })
 }
@@ -59,7 +63,7 @@ function reloadPage() {
 
 /**
  * ErrorBoundary - Catches errors in child components
- * 
+ *
  * IMPORTANT: React REQUIRES a class component for error boundaries.
  * There is NO hook equivalent for getDerivedStateFromError/componentDidCatch.
  * This is a React API limitation, not a design choice.
@@ -75,7 +79,7 @@ export class ErrorBoundary extends Component {
 	componentDidCatch(error, errorInfo) {
 		console.error('ErrorBoundary caught an error:', error)
 		console.error('Component stack:', errorInfo.componentStack)
-		
+
 		const { onError } = this.props
 		this.setState({ errorInfo })
 		if (onError) onError(error, errorInfo)

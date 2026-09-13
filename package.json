@@ -1,5 +1,5 @@
 {
-	"name": "effects-adv-prj",
+	"name": "react-quiz",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -14,7 +14,6 @@
 	},
 	"dependencies": {
 		"canvas-confetti": "^1.9.4",
-		"firebase": "^11.7.1",
 		"framer-motion": "^13.2.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"

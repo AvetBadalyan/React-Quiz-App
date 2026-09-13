@@ -11,112 +11,83 @@ import { AnimatedPage } from '../../layout/AnimatedPage.jsx'
 import { Button } from '../../ui/Button.jsx'
 
 /**
- * SummaryScreen component displays quiz results after completion
+ * SummaryScreen — displayed after the quiz completes.
  *
- * Features:
- * - Display statistics (correct, wrong, skipped percentages)
- * - Question-by-question breakdown showing user answers
- * - High score display with new record indicator
- * - Confetti celebration for new high scores
- * - Restart Quiz button to return to Start Screen
- * - Focus management for keyboard accessibility
- *
- * @returns {JSX.Element} Summary screen with quiz results
- *
- * @requirements 6.1-6.3, 7.8, 8.4-8.6, 11.1-11.5, 12.1-12.5 (Keyboard accessibility)
+ * Shows score, per-category stats, a question-by-question breakdown,
+ * and the all-time high score. Triggers confetti on a new record.
  */
 export function SummaryScreen() {
-	const { state, actions, correctCount, totalQuestions } = useQuiz()
-	const { getHighScore, checkAndSaveHighScore, lastSaveResult } =
-		useHighScores()
+	const { state, actions, correctCount } = useQuiz()
+	const { getHighScore, checkAndSaveHighScore } = useHighScores()
+
 	const [isNewRecord, setIsNewRecord] = useState(false)
 	const [highScore, setHighScore] = useState(null)
 	const screenRef = useRef(null)
 
-	// Focus management: focus the screen container when mounted for keyboard users
+	// Focus the container on mount so keyboard users land in the right place
 	useEffect(() => {
-		const timer = setTimeout(() => {
-			screenRef.current?.focus()
-		}, 300) // Slight delay to allow animation to start
-		return () => clearTimeout(timer)
+		const id = setTimeout(() => screenRef.current?.focus(), 300)
+		return () => clearTimeout(id)
 	}, [])
 
-	// Calculate results from quiz state
-	const results = useMemo(() => {
-		const correct = state.userAnswers.filter(a => a.isCorrect).length
-		const skipped = state.userAnswers.filter(
-			a => a.selectedAnswer === null
-		).length
-		const wrong = state.userAnswers.length - correct - skipped
+	// Save the score once and update the high score display
+	useEffect(() => {
+		if (!state.category || !state.difficulty || state.userAnswers.length === 0)
+			return
 
-		return { correct, wrong, skipped }
-	}, [state.userAnswers])
+		const newRecord = checkAndSaveHighScore(
+			state.category,
+			state.difficulty,
+			correctCount,
+			state.userAnswers.length
+		)
+		setIsNewRecord(newRecord)
+		setHighScore(getHighScore(state.category, state.difficulty))
+	}, []) // eslint-disable-line react-hooks/exhaustive-deps — intentionally runs once on mount
 
-	// Calculate percentages
-	const percentages = useMemo(() => {
-		return calculatePercentages(results)
-	}, [results])
+	const totalAnswers = state.userAnswers.length
 
-	// Calculate score
-	const score = useMemo(() => {
-		return calculateScore(results.correct, state.userAnswers.length)
-	}, [results.correct, state.userAnswers.length])
+	const skippedCount = useMemo(
+		() => state.userAnswers.filter(a => a.selectedAnswer === null).length,
+		[state.userAnswers]
+	)
+	const wrongCount = totalAnswers - correctCount - skippedCount
 
-	// Calculate time taken
+	const percentages = useMemo(
+		() =>
+			calculatePercentages({
+				correct: correctCount,
+				wrong: wrongCount,
+				skipped: skippedCount
+			}),
+		[correctCount, wrongCount, skippedCount]
+	)
+
+	const score = useMemo(
+		() => calculateScore(correctCount, totalAnswers),
+		[correctCount, totalAnswers]
+	)
+
 	const timeTaken = useMemo(() => {
 		if (!state.startTime || !state.endTime) return null
 		const seconds = Math.round((state.endTime - state.startTime) / 1000)
-		const minutes = Math.floor(seconds / 60)
-		const remainingSeconds = seconds % 60
-		return minutes > 0 ? `${minutes}m ${remainingSeconds}s` : `${seconds}s`
+		const m = Math.floor(seconds / 60)
+		const s = seconds % 60
+		return m > 0 ? `${m}m ${s}s` : `${seconds}s`
 	}, [state.startTime, state.endTime])
 
-	// Check and save high score on mount
-	useEffect(() => {
-		if (state.category && state.difficulty && state.userAnswers.length > 0) {
-			const newRecord = checkAndSaveHighScore(
-				state.category,
-				state.difficulty,
-				results.correct,
-				state.userAnswers.length
-			)
-			setIsNewRecord(newRecord)
-
-			// Get updated high score after potential save
-			const currentHighScore = getHighScore(state.category, state.difficulty)
-			setHighScore(currentHighScore)
-		}
-	}, [
-		state.category,
-		state.difficulty,
-		state.userAnswers.length,
-		results.correct,
-		checkAndSaveHighScore,
-		getHighScore
-	])
-
-	// Get category and difficulty labels
 	const categoryLabel = CATEGORY_CONFIG[state.category]?.label || state.category
 	const difficultyLabel =
 		DIFFICULTY_CONFIG[state.difficulty]?.label || state.difficulty
 
-	// Handle restart quiz
-	const handleRestart = () => {
-		actions.resetQuiz()
-	}
-
-	// Get CSS class for user answer
 	const getAnswerClass = userAnswer => {
-		if (userAnswer.selectedAnswer === null) {
-			return 'user-answer skipped'
-		}
+		if (userAnswer.selectedAnswer === null) return 'user-answer skipped'
 		return userAnswer.isCorrect ? 'user-answer correct' : 'user-answer wrong'
 	}
 
 	return (
 		<AnimatedPage>
-			{/* Trigger confetti for new high scores */}
-			{isNewRecord && <Confetti trigger={true} />}
+			{isNewRecord && <Confetti trigger />}
 
 			<div
 				id="summary"
@@ -133,10 +104,9 @@ export function SummaryScreen() {
 				/>
 				<h2 id="summary-title">Quiz Completed!</h2>
 
-				{/* Category and difficulty info */}
 				<div
 					className="summary-screen__meta"
-					aria-label={`${categoryLabel} quiz on ${difficultyLabel} difficulty${timeTaken ? `, completed in ${timeTaken}` : ''}`}
+					aria-label={`${categoryLabel} quiz, ${difficultyLabel} difficulty${timeTaken ? `, completed in ${timeTaken}` : ''}`}
 				>
 					<span className="summary-screen__category">{categoryLabel}</span>
 					<span
@@ -159,10 +129,8 @@ export function SummaryScreen() {
 					)}
 				</div>
 
-				{/* New record badge */}
 				{isNewRecord && <NewRecordBadge />}
 
-				{/* Statistics */}
 				<div
 					id="summary-stats"
 					role="region"
@@ -182,26 +150,22 @@ export function SummaryScreen() {
 					</p>
 				</div>
 
-				{/* Score display */}
 				<div
 					className="summary-screen__score"
 					role="status"
-					aria-live="polite"
-					aria-label={`Your score: ${score}%, ${results.correct} of ${state.userAnswers.length} correct`}
+					aria-label={`Your score: ${score}%, ${correctCount} of ${totalAnswers} correct`}
 				>
 					<span className="summary-screen__score-label">Your Score</span>
 					<span className="summary-screen__score-value">{score}%</span>
 					<span className="summary-screen__score-detail">
-						{results.correct} of {state.userAnswers.length} correct
+						{correctCount} of {totalAnswers} correct
 					</span>
 				</div>
 
-				{/* High score display */}
 				<div className="summary-screen__high-score">
 					<HighScoreDisplay highScore={highScore} />
 				</div>
 
-				{/* Question-by-question breakdown */}
 				<ol
 					className="summary-screen__questions"
 					aria-label="Question breakdown"
@@ -217,7 +181,6 @@ export function SummaryScreen() {
 								<p className={getAnswerClass(userAnswer)}>
 									{userAnswer.selectedAnswer ?? 'Skipped'}
 								</p>
-								{/* Show correct answer if wrong or skipped */}
 								{!userAnswer.isCorrect && (
 									<p className="correct-answer">
 										Correct: {question.answers[0]}
@@ -228,11 +191,10 @@ export function SummaryScreen() {
 					})}
 				</ol>
 
-				{/* Restart button */}
 				<div className="summary-screen__actions">
 					<Button
 						variant="primary"
-						onClick={handleRestart}
+						onClick={() => actions.resetQuiz()}
 						aria-label="Restart quiz and return to start screen"
 					>
 						Restart Quiz

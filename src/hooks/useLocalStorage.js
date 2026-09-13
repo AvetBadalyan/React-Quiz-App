@@ -1,87 +1,39 @@
+import { useCallback, useState } from 'react'
+
 /**
- * useLocalStorage Hook
- *
  * Generic hook for syncing React state with localStorage.
- * Handles JSON serialization/deserialization and provides
- * a useState-like API with automatic persistence.
+ * Provides a useState-like API with automatic JSON serialization.
  *
- * Validates: Requirements 8.8, 10.2
- */
-
-import { useState, useEffect, useCallback } from 'react'
-
-/**
- * Custom hook for syncing state with localStorage
- *
- * @param {string} key - The localStorage key
- * @param {*} initialValue - Default value if key doesn't exist
- * @returns {[*, Function]} - [value, setValue] tuple
+ * @param {string} key - localStorage key
+ * @param {*} initialValue - default value when the key doesn't exist yet
+ * @returns {[*, Function]} [storedValue, setValue]
  *
  * @example
- * // Boolean preference
- * const [soundEnabled, setSoundEnabled] = useLocalStorage('soundEnabled', false)
- *
- * @example
- * // Object storage
- * const [preferences, setPreferences] = useLocalStorage('prefs', { theme: 'dark' })
+ * const [muted, setMuted] = useLocalStorage('soundEnabled', false)
  */
 export function useLocalStorage(key, initialValue) {
-  // Initialize state with value from localStorage or initialValue
-  const [storedValue, setStoredValue] = useState(() => {
-    try {
-      const item = localStorage.getItem(key)
-      // Parse stored JSON or return initialValue if nothing stored
-      return item !== null ? JSON.parse(item) : initialValue
-    } catch (error) {
-      // If parsing fails, return initialValue
-      console.warn(`Error reading localStorage key "${key}":`, error)
-      return initialValue
-    }
-  })
+	const [storedValue, setStoredValue] = useState(() => {
+		try {
+			const item = localStorage.getItem(key)
+			return item !== null ? JSON.parse(item) : initialValue
+		} catch {
+			return initialValue
+		}
+	})
 
-  /**
-   * Wrapped setter that updates both state and localStorage
-   * Accepts a value or a function (like useState's setter)
-   *
-   * @param {*|Function} valueOrFn - New value or function that receives previous value
-   */
-  const setValue = useCallback(
-    (valueOrFn) => {
-      try {
-        // Allow value to be a function (like useState)
-        const valueToStore =
-          valueOrFn instanceof Function ? valueOrFn(storedValue) : valueOrFn
+	const setValue = useCallback(
+		valueOrFn => {
+			try {
+				const next =
+					valueOrFn instanceof Function ? valueOrFn(storedValue) : valueOrFn
+				setStoredValue(next)
+				localStorage.setItem(key, JSON.stringify(next))
+			} catch (error) {
+				console.warn(`useLocalStorage: could not write key "${key}"`, error)
+			}
+		},
+		[key, storedValue]
+	)
 
-        // Update React state
-        setStoredValue(valueToStore)
-
-        // Save to localStorage with JSON serialization
-        localStorage.setItem(key, JSON.stringify(valueToStore))
-      } catch (error) {
-        console.warn(`Error setting localStorage key "${key}":`, error)
-      }
-    },
-    [key, storedValue]
-  )
-
-  // Listen for storage changes from other tabs/windows
-  useEffect(() => {
-    const handleStorageChange = (event) => {
-      if (event.key === key && event.newValue !== null) {
-        try {
-          setStoredValue(JSON.parse(event.newValue))
-        } catch (error) {
-          console.warn(`Error parsing storage event for key "${key}":`, error)
-        }
-      } else if (event.key === key && event.newValue === null) {
-        // Key was removed, reset to initial value
-        setStoredValue(initialValue)
-      }
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
-  }, [key, initialValue])
-
-  return [storedValue, setValue]
+	return [storedValue, setValue]
 }
