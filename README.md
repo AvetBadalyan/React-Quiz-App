@@ -1,26 +1,65 @@
-# React Quiz App
+# Frontend Quiz
 
-A dynamic, interactive quiz application built with React that tests users' knowledge with timed questions and provides immediate feedback.
+An interactive frontend developer quiz app built with React 19. Tests knowledge across HTML, CSS, JavaScript, and React with timed questions, difficulty levels, and high score tracking.
 
-[Show Demo](https://react--quiz-app.web.app)
+**[Live Demo →](https://react--quiz-app.web.app)**
 
-![React Quiz App](./src/assets/screenshot.jpg)
+![Frontend Quiz screenshot](./src/assets/screenshot.jpg)
 
 ## Features
 
-- **Timed Questions**: Each question has a 20-second countdown timer
-- **Interactive UI**: Visual feedback for selected, correct, and incorrect answers
-- **Answer Evaluation**: Immediate feedback on answer correctness
-- **Skip Option**: Ability to skip difficult questions
-- **Randomized Answers**: Answer options are shuffled for each question
-- **Comprehensive Summary**: Detailed results showing performance statistics
-- **Progress Tracking**: Visual indication of quiz progress
+- **4 categories** — HTML, CSS, JavaScript, React (95 questions total)
+- **3 difficulty levels** — Easy (30s / 10 questions), Medium (20s / 15), Hard (15s / 20)
+- **Topic filters** — focus on specific areas within each category
+- **Timed questions** — per-question countdown with visual + audio warning at 5 seconds
+- **Instant feedback** — correct answer revealed after each selection
+- **High score tracking** — best score per category/difficulty saved in localStorage
+- **Sound effects** — toggleable correct/wrong/warning audio
+- **Keyboard navigation** — press 1–4 to select answers
+- **Confetti celebration** — on new high score records
 
-## Installation
+## Tech stack
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/AvetBadalyan/React-Quiz-App.git
-   cd react-quiz-app
-   npm install
-   npm run dev
+- **React 19** — `useReducer` for quiz state, `useContext` for sound, custom hooks for timer and scores
+- **Framer Motion** — page transitions and staggered answer animations
+- **SCSS** — design tokens, BEM naming, responsive layout, dark theme
+- **Vite** — build tool and dev server
+- **Vitest + React Testing Library** — 158 tests across hooks, services, and screens
+
+## Getting started
+
+```bash
+git clone https://github.com/AvetBadalyan/React-Quiz-App.git
+cd React-Quiz-App
+npm install
+npm run dev
+```
+
+## Scripts
+
+| Command            | Description              |
+| ------------------ | ------------------------ |
+| `npm run dev`      | Start dev server         |
+| `npm run build`    | Production build         |
+| `npm run preview`  | Preview production build |
+| `npm run test`     | Run tests in watch mode  |
+| `npm run test:run` | Run tests once           |
+| `npm run lint`     | ESLint check             |
+| `npm run format`   | Prettier format          |
+
+## Project structure
+
+```
+src/
+├── components/
+│   ├── feedback/     # Confetti, HighScoreDisplay, NewRecordBadge
+│   ├── layout/       # Header, AnimatedPage
+│   ├── quiz/         # CategorySelector, Answers, QuestionTimer, TopicFilter
+│   │   └── screens/  # StartScreen, QuizScreen, SummaryScreen
+│   └── ui/           # Button, ProgressBar, Toggle
+├── context/          # QuizContext (useReducer), SoundContext
+├── data/             # constants, question bank (html/css/js/react)
+├── hooks/            # useTimer, useHighScores, useKeyboardNavigation, useLocalStorage
+├── services/         # questionService, storageService, soundManager
+└── utils/            # animations, scoring, shuffle
+```
