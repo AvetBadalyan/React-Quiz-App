@@ -8,8 +8,7 @@ An interactive frontend developer quiz app built with React 19. Tests knowledge 
 
 ## Features
 
-- **4 categories** — HTML, CSS, JavaScript, React (95 questions total)
-- **5 categories** — HTML, CSS, JavaScript, React + **JS Tricky** (250 questions total)
+- **5 categories** — HTML, CSS, JavaScript, React, JS Tricky (250 questions total)
 - **JS Tricky** — 155 output-prediction questions from [Lydia Hallie's javascript-questions](https://github.com/lydiahallie/javascript-questions) rendered with syntax-highlighted code blocks
 - **3 difficulty levels** — Easy (30s / 10 questions), Medium (20s / 15), Hard (15s / 20)
 - **Topic filters** — focus on specific areas within each category
