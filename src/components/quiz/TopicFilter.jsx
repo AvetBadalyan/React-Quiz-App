@@ -14,8 +14,6 @@ import {
  * @param {string[]} props.selectedTopics - Currently selected topics
  * @param {Function} props.onTopicsChange - Handler for topic selection changes
  * @param {string} props.difficulty - Selected difficulty (for question count check)
- *
- * Requirements: 9.1-9.6, 12.1-12.5 (Keyboard accessibility)
  */
 export function TopicFilter({
 	category,
@@ -86,10 +84,7 @@ export function TopicFilter({
 				})}
 			</div>
 			{hasInsufficientQuestions && (
-				<p
-					className="topic-filter__warning"
-					role="alert"
-				>
+				<p className="topic-filter__warning" role="alert">
 					Only {availableCount} questions available. Need {requiredCount} for{' '}
 					{difficulty} difficulty.
 				</p>

@@ -1,15 +1,14 @@
 /**
- * Storage Service
+ * Storage service — a thin localStorage wrapper with JSON serialization
+ * plus helpers for reading and saving quiz high scores.
  *
- * Thin localStorage abstraction with JSON serialization and high score management.
+ * High scores are keyed by "category-difficulty", e.g. "react-hard".
  */
 
 export const STORAGE_KEYS = {
 	HIGH_SCORES: 'quizHighScores',
 	SOUND_ENABLED: 'soundEnabled'
 }
-
-const CURRENT_VERSION = 1
 
 function get(key, defaultValue = null) {
 	try {
@@ -31,58 +30,38 @@ function set(key, value) {
 	}
 }
 
-function getHighScores() {
-	const data = get(STORAGE_KEYS.HIGH_SCORES, {
-		version: CURRENT_VERSION,
-		scores: {}
-	})
-
-	// Migrate if schema is old (version missing or outdated)
-	if (!data.version || data.version < CURRENT_VERSION) {
-		const migrated = { version: CURRENT_VERSION, scores: data.scores || {} }
-		// Handle very old format where scores were stored at root level
-		if (!data.scores && typeof data === 'object') {
-			Object.keys(data).forEach(key => {
-				if (key.includes('-') && typeof data[key] === 'object') {
-					migrated.scores[key] = data[key]
-				}
-			})
-		}
-		set(STORAGE_KEYS.HIGH_SCORES, migrated)
-		return migrated
-	}
-
-	return data
-}
-
-function saveHighScore(category, difficulty, scoreData) {
-	const key = `${category}-${difficulty}`
-	const highScores = getHighScores()
-	const existing = highScores.scores[key]
-
-	if (!existing || scoreData.score > existing.score) {
-		highScores.scores[key] = {
-			score: scoreData.score,
-			correctCount: scoreData.correctCount,
-			totalCount: scoreData.totalCount,
-			timestamp: Date.now()
-		}
-		set(STORAGE_KEYS.HIGH_SCORES, highScores)
-		return true
-	}
-
-	return false
+function scoreKey(category, difficulty) {
+	return `${category}-${difficulty}`
 }
 
 function getHighScore(category, difficulty) {
-	const key = `${category}-${difficulty}`
-	return getHighScores().scores[key] || null
+	const scores = get(STORAGE_KEYS.HIGH_SCORES, {})
+	return scores[scoreKey(category, difficulty)] || null
+}
+
+/**
+ * Save a score if it beats the existing high score.
+ * @returns {boolean} true when a new record was stored.
+ */
+function saveHighScore(
+	category,
+	difficulty,
+	{ score, correctCount, totalCount }
+) {
+	const scores = get(STORAGE_KEYS.HIGH_SCORES, {})
+	const key = scoreKey(category, difficulty)
+	const existing = scores[key]
+
+	if (existing && score <= existing.score) return false
+
+	scores[key] = { score, correctCount, totalCount, timestamp: Date.now() }
+	set(STORAGE_KEYS.HIGH_SCORES, scores)
+	return true
 }
 
 export const storageService = {
 	get,
 	set,
-	getHighScores,
-	saveHighScore,
-	getHighScore
+	getHighScore,
+	saveHighScore
 }

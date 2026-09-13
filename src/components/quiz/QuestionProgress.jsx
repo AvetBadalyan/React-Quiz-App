@@ -14,8 +14,6 @@
  * @example
  * <QuestionProgress current={3} total={10} />
  * // Renders: "Question 3 of 10"
- *
- * @requirements 5.1-5.3 - Question Progress Indicator requirements
  */
 export function QuestionProgress({ current, total }) {
 	return (

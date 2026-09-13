@@ -4,15 +4,14 @@
  * Visual countdown timer for quiz questions with warning state support.
  * Features:
  * - Progress bar showing time remaining
- * - Warning state at 5000ms with distinct color and pulsing animation
+ * - Warning state at TIMER_WARNING_THRESHOLD with distinct color and pulsing animation
  * - Pause mode during feedback
  * - Integration with Sound Context for warning sound
  * - ARIA live region for screen reader announcements
- *
- * Validates: Requirements 3.1-3.3, 13.1-13.6, Accessibility best practices
  */
 
 import { useSound } from '../../context/SoundContext.jsx'
+import { TIMER_WARNING_THRESHOLD } from '../../data/constants.js'
 import { useTimer } from '../../hooks/useTimer.js'
 import { ProgressBar } from '../ui/ProgressBar.jsx'
 
@@ -29,7 +28,7 @@ export function QuestionTimer({ duration, onTimeout, isPaused = false }) {
 	const { timeRemaining, isWarning, progress } = useTimer(duration, {
 		onTimeout,
 		onWarning: playWarning,
-		warningThreshold: 5000,
+		warningThreshold: TIMER_WARNING_THRESHOLD,
 		isPaused
 	})
 
@@ -56,10 +55,7 @@ export function QuestionTimer({ duration, onTimeout, isPaused = false }) {
 				</span>
 				{/* Screen reader only announcement for warning state */}
 				{isWarning && (
-					<span
-						className="sr-only"
-						role="alert"
-					>
+					<span className="sr-only" role="alert">
 						Warning: Only {seconds} seconds remaining
 					</span>
 				)}

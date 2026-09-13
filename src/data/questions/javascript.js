@@ -24,7 +24,12 @@ export default [
 	{
 		id: 'js-002',
 		text: 'What will be logged to the console?\n\nfunction outer() {\n  let count = 0;\n  return function inner() {\n    count++;\n    return count;\n  };\n}\nconst counter = outer();\nconsole.log(counter());\nconsole.log(counter());',
-		answers: ['1, then 2', '0, then 1', '1, then 1', 'undefined, then undefined'],
+		answers: [
+			'1, then 2',
+			'0, then 1',
+			'1, then 1',
+			'undefined, then undefined'
+		],
 		difficulty: 'medium',
 		category: 'javascript',
 		topic: 'closures'
@@ -75,7 +80,7 @@ export default [
 			'The environment where a function was defined, containing the variables accessible to it',
 			'The global window object',
 			'The current call stack',
-			'The browser\'s document object'
+			"The browser's document object"
 		],
 		difficulty: 'medium',
 		category: 'javascript',
@@ -301,12 +306,7 @@ export default [
 	{
 		id: 'js-024',
 		text: 'Which array method modifies the original array?',
-		answers: [
-			'.push()',
-			'.map()',
-			'.filter()',
-			'.concat()'
-		],
+		answers: ['.push()', '.map()', '.filter()', '.concat()'],
 		difficulty: 'medium',
 		category: 'javascript',
 		topic: 'arrays'

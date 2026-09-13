@@ -4,6 +4,7 @@ import { SummaryScreen } from './SummaryScreen.jsx'
 
 // Mock the context and hooks
 const mockResetQuiz = vi.fn()
+const mockPlayAgain = vi.fn()
 const mockCheckAndSaveHighScore = vi.fn()
 const mockGetHighScore = vi.fn()
 
@@ -72,7 +73,8 @@ vi.mock('../../../context/QuizContext.jsx', () => ({
 	useQuiz: () => ({
 		state: createMockState(),
 		actions: {
-			resetQuiz: mockResetQuiz
+			resetQuiz: mockResetQuiz,
+			playAgain: mockPlayAgain
 		},
 		correctCount: 1,
 		totalQuestions: 3
@@ -111,10 +113,7 @@ vi.mock('../../feedback/HighScoreDisplay.jsx', () => ({
 
 vi.mock('../../ui/Button.jsx', () => ({
 	Button: ({ children, onClick, ...props }) => (
-		<button
-			onClick={onClick}
-			{...props}
-		>
+		<button onClick={onClick} {...props}>
 			{children}
 		</button>
 	)
@@ -202,19 +201,37 @@ describe('SummaryScreen', () => {
 		expect(correctAnswerElements.length).toBe(2) // 1 wrong + 1 skipped
 	})
 
-	it('displays restart quiz button', () => {
+	it('displays Try Again and New Quiz buttons', () => {
 		render(<SummaryScreen />)
 
 		expect(
-			screen.getByRole('button', { name: /restart quiz/i })
+			screen.getByRole('button', { name: /try the .* quiz again/i })
+		).toBeInTheDocument()
+		expect(
+			screen.getByRole('button', {
+				name: /choose a different category and difficulty/i
+			})
 		).toBeInTheDocument()
 	})
 
-	it('calls resetQuiz when restart button is clicked', () => {
+	it('calls playAgain when Try Again is clicked', () => {
 		render(<SummaryScreen />)
 
-		const restartButton = screen.getByRole('button', { name: /restart quiz/i })
-		fireEvent.click(restartButton)
+		const tryAgain = screen.getByRole('button', {
+			name: /try the .* quiz again/i
+		})
+		fireEvent.click(tryAgain)
+
+		expect(mockPlayAgain).toHaveBeenCalledTimes(1)
+	})
+
+	it('calls resetQuiz when New Quiz is clicked', () => {
+		render(<SummaryScreen />)
+
+		const newQuiz = screen.getByRole('button', {
+			name: /choose a different category and difficulty/i
+		})
+		fireEvent.click(newQuiz)
 
 		expect(mockResetQuiz).toHaveBeenCalledTimes(1)
 	})
@@ -280,13 +297,17 @@ describe('SummaryScreen - Accessibility', () => {
 		vi.clearAllMocks()
 	})
 
-	it('has accessible restart button with aria-label', () => {
+	it('has accessible action buttons with descriptive aria-labels', () => {
 		render(<SummaryScreen />)
 
-		const button = screen.getByRole('button', {
-			name: /restart quiz and return to start screen/i
-		})
-		expect(button).toBeInTheDocument()
+		expect(
+			screen.getByRole('button', { name: /try the .* quiz again/i })
+		).toBeInTheDocument()
+		expect(
+			screen.getByRole('button', {
+				name: /choose a different category and difficulty/i
+			})
+		).toBeInTheDocument()
 	})
 
 	it('has proper heading structure', () => {

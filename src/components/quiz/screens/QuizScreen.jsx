@@ -54,7 +54,7 @@ export function QuizScreen() {
 		questionStartTime.current = Date.now()
 
 		return () => clearTimeout(feedbackTimerRef.current)
-	}, [currentQuestion?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+	}, [currentQuestion?.id])
 
 	const advanceAfterFeedback = useCallback(() => {
 		feedbackTimerRef.current = setTimeout(() => {
@@ -143,10 +143,7 @@ export function QuizScreen() {
 							isPaused={showFeedback}
 						/>
 
-						<h2
-							className="question__text"
-							id="question-text"
-						>
+						<h2 className="question__text" id="question-text">
 							{currentQuestion.text}
 						</h2>
 
@@ -160,20 +157,13 @@ export function QuizScreen() {
 						/>
 
 						{/* Screen reader hint for keyboard shortcuts */}
-						<p
-							className="sr-only"
-							aria-live="polite"
-						>
+						<p className="sr-only" aria-live="polite">
 							Press keys 1 through {shuffledAnswers.length} to select an answer
 						</p>
 
 						{/* Screen reader feedback announcement */}
 						{showFeedback && (
-							<div
-								className="sr-only"
-								role="status"
-								aria-live="assertive"
-							>
+							<div className="sr-only" role="status" aria-live="assertive">
 								{selectedAnswer === correctAnswer
 									? 'Correct answer!'
 									: selectedAnswer === null
@@ -187,5 +177,3 @@ export function QuizScreen() {
 		</AnimatedPage>
 	)
 }
-
-export default QuizScreen

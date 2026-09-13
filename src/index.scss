@@ -1,13 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
+/* ========================================
+   Design tokens
+   Central palette + fonts so colours stay consistent
+   and can be tuned in one place.
+   ======================================== */
+
+// Fonts
+$font-body: 'Roboto', sans-serif;
+$font-heading: 'Roboto Condensed', sans-serif;
+
+// Backgrounds / surfaces (dark → light purple)
+$color-bg: #1d0433; // page background
+$color-panel-start: #3e2a60; // panel gradient top
+$color-panel-end: #321061; // panel gradient bottom
+$color-surface: #6a558a; // borders, sliders
+$color-surface-deeper: #3a2353; // summary image border
+
+$color-ink: #191321; // dark text on light buttons
+$color-ink-soft: #2c203d; // dark text on coloured feedback buttons / badge
+
+// Brand purple (primary actions, selection)
+$color-primary: #a17eda;
+$color-primary-dark: #895fc4;
+$color-primary-bright: #8e76fa;
+
+// Accents
+$color-accent: #e781fb; // focus ring, highlights
+$color-danger: #f77aac; // wrong answers, errors
+$color-warning: #f5a76c; // timer warning, cautions
+$color-success: #5af59d; // correct answers
+$color-gold: #f8e59c; // high score / celebration
+$color-answer: #6cb7f5; // answer buttons
+
+// Text (on dark backgrounds)
+$color-text: #ebe7ef;
+$color-text-muted: #c1b2dd;
+$color-text-dim: #ab9dbd;
+$color-text-light: #c7bfd6; // secondary button hover text
+
+// Extra purple shades (hover / gradient stops)
+$color-primary-hover: #bf48f6;
+$color-primary-hover-end: #9b50f2;
+$color-lilac: #b18ee8;
+$color-lilac-dark: #9a70d0;
+$color-violet: #9d5af5; // answer hover
+$color-violet-alt: #9e5ef8; // progress-bar fill
+$color-slate: #7d6a9a; // toggle hover
+
+// Shadows
+$shadow-panel: 1px 1px 8px 4px rgba(12, 5, 32, 0.6);
+
 * {
 	box-sizing: border-box;
 }
 
 html {
-	font-family: 'Roboto', sans-serif;
+	font-family: $font-body;
 	line-height: 1.5;
-	color: #ebe7ef;
+	color: $color-text;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -19,7 +70,7 @@ html {
 body {
 	margin: 0;
 	padding: 2rem;
-	background-color: #1d0433;
+	background-color: $color-bg;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 400'%3E%3Cdefs%3E%3CradialGradient id='a' cx='396' cy='281' r='514' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%237616DD'/%3E%3Cstop offset='1' stop-color='%231D0433'/%3E%3C/radialGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='400' y1='148' x2='400' y2='333'%3E%3Cstop offset='0' stop-color='%2318E0FF' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%2318E0FF' stop-opacity='0.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='800' height='400'/%3E%3Cg fill-opacity='0.4'%3E%3Ccircle fill='url(%23b)' cx='267.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='532.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='400' cy='30' r='300'/%3E%3C/g%3E%3C/svg%3E");
 	background-attachment: fixed;
 	background-size: cover;
@@ -33,17 +84,17 @@ body {
 	width: 50%;
 	height: 0.5rem;
 	border-radius: 24px;
-	background: #6a558a;
+	background: $color-surface;
 	overflow: hidden;
 	margin: 0 auto;
 
 	&__fill {
 		height: 100%;
 		border-radius: 24px;
-		background: #9e5ef8;
+		background: $color-violet-alt;
 
 		&--warning {
-			background: linear-gradient(90deg, #f5a76c 0%, #f55a98 100%);
+			background: linear-gradient(90deg, $color-warning 0%, $color-danger 100%);
 			animation: pulse-warning 0.5s ease-in-out infinite;
 		}
 	}
@@ -65,7 +116,7 @@ body {
    Button
    ======================================== */
 .btn {
-	font-family: 'Roboto Condensed', sans-serif;
+	font-family: $font-heading;
 	font-size: 1rem;
 	padding: 0.75rem 1.5rem;
 	border: none;
@@ -81,33 +132,41 @@ body {
 	}
 
 	&:focus {
-		outline: 2px solid #e781fb;
+		outline: 2px solid $color-accent;
 		outline-offset: 2px;
 	}
 }
 
 .btn-primary {
-	background: linear-gradient(180deg, #a17eda 0%, #895fc4 100%);
-	color: #191321;
+	background: linear-gradient(
+		180deg,
+		$color-primary 0%,
+		$color-primary-dark 100%
+	);
+	color: $color-ink;
 	font-weight: bold;
 
 	&:hover:not(:disabled),
 	&:focus:not(:disabled) {
-		background: linear-gradient(180deg, #bf48f6 0%, #9b50f2 100%);
+		background: linear-gradient(
+			180deg,
+			$color-primary-hover 0%,
+			$color-primary-hover-end 100%
+		);
 		color: white;
 	}
 }
 
 .btn-secondary {
 	background: transparent;
-	color: #9082a3;
-	border: 2px solid #9082a3;
+	color: $color-text-dim;
+	border: 2px solid $color-text-dim;
 
 	&:hover:not(:disabled),
 	&:focus:not(:disabled) {
 		background: rgba(144, 130, 163, 0.1);
-		color: #c7bfd6;
-		border-color: #c7bfd6;
+		color: $color-text-light;
+		border-color: $color-text-light;
 	}
 }
 
@@ -117,15 +176,15 @@ body {
 	justify-content: flex-start;
 	gap: 0.75rem;
 	width: 100%;
-	font-size: 0.9rem;
+	font-size: 0.875rem;
 	padding: 1rem 2rem;
-	background: #6cb7f5;
-	color: #191321;
+	background: $color-answer;
+	color: $color-ink;
 	text-align: left;
 
 	&:hover:not(:disabled),
 	&:focus:not(:disabled) {
-		background: #9d5af5;
+		background: $color-violet;
 		color: white;
 
 		.answer__hint {
@@ -135,32 +194,32 @@ body {
 	}
 
 	&.selected {
-		background: #f5a76c;
-		color: #2c203d;
+		background: $color-warning;
+		color: $color-ink-soft;
 
 		.answer__hint {
 			background: rgba(0, 0, 0, 0.15);
-			color: #2c203d;
+			color: $color-ink-soft;
 		}
 	}
 
 	&.correct {
-		background: #5af59d;
-		color: #2c203d;
+		background: $color-success;
+		color: $color-ink-soft;
 
 		.answer__hint {
 			background: rgba(0, 0, 0, 0.15);
-			color: #2c203d;
+			color: $color-ink-soft;
 		}
 	}
 
 	&.wrong {
-		background: #f55a98;
-		color: #2c203d;
+		background: $color-danger;
+		color: $color-ink-soft;
 
 		.answer__hint {
 			background: rgba(0, 0, 0, 0.15);
-			color: #2c203d;
+			color: $color-ink-soft;
 		}
 	}
 
@@ -176,11 +235,11 @@ body {
 	justify-content: center;
 	min-width: 1.5rem;
 	height: 1.5rem;
-	font-family: 'Roboto Condensed', sans-serif;
+	font-family: $font-heading;
 	font-size: 0.75rem;
 	font-weight: bold;
 	background: rgba(0, 0, 0, 0.1);
-	color: #191321;
+	color: $color-ink;
 	border-radius: 4px;
 	flex-shrink: 0;
 }
@@ -219,7 +278,7 @@ body {
 		border: 0;
 
 		&:focus + .toggle__slider {
-			outline: 2px solid #e781fb;
+			outline: 2px solid $color-accent;
 			outline-offset: 2px;
 		}
 	}
@@ -229,8 +288,8 @@ body {
 		display: inline-block;
 		width: 2.75rem;
 		height: 1.5rem;
-		background: #6a558a;
-		border-radius: 1.5rem;
+		background: $color-surface;
+		border-radius: 24px;
 		transition: background-color 0.2s ease-in-out;
 
 		&::after {
@@ -240,14 +299,18 @@ body {
 			left: 0.1875rem;
 			width: 1.125rem;
 			height: 1.125rem;
-			background: #ebe7ef;
+			background: $color-text;
 			border-radius: 50%;
 			transition: transform 0.2s ease-in-out;
 			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		}
 
 		&--checked {
-			background: linear-gradient(180deg, #a17eda 0%, #895fc4 100%);
+			background: linear-gradient(
+				180deg,
+				$color-primary 0%,
+				$color-primary-dark 100%
+			);
 
 			&::after {
 				transform: translateX(1.25rem);
@@ -257,19 +320,23 @@ body {
 	}
 
 	&__label {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 0.875rem;
-		color: #c1b2dd;
+		color: $color-text-muted;
 		text-transform: uppercase;
 		letter-spacing: 0.05rem;
 	}
 
 	&:hover .toggle__slider {
-		background: #7d6a9a;
+		background: $color-slate;
 	}
 
 	&:hover .toggle__slider--checked {
-		background: linear-gradient(180deg, #b18ee8 0%, #9a70d0 100%);
+		background: linear-gradient(
+			180deg,
+			$color-lilac 0%,
+			$color-lilac-dark 100%
+		);
 	}
 }
 
@@ -280,10 +347,10 @@ body {
 	margin: 1.5rem 0;
 
 	h3 {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 1rem;
 		text-transform: uppercase;
-		color: #9082a3;
+		color: $color-text-dim;
 		margin: 0 0 1rem 0;
 		letter-spacing: 0.05rem;
 	}
@@ -305,7 +372,7 @@ body {
 		justify-content: center;
 		gap: 0.5rem;
 		padding: 1.25rem 1rem;
-		border: 2px solid #6a558a;
+		border: 2px solid $color-surface;
 		border-radius: 12px;
 		background: rgba(106, 85, 138, 0.2);
 		cursor: pointer;
@@ -316,22 +383,24 @@ body {
 			box-shadow 0.2s ease-in-out;
 
 		&:hover {
-			border-color: var(--category-color, #9082a3);
+			border-color: var(--category-color, $color-text-dim);
 			background: rgba(106, 85, 138, 0.35);
 			transform: translateY(-2px);
 		}
 
 		&:focus {
-			outline: 2px solid #e781fb;
+			outline: 2px solid $color-accent;
 			outline-offset: 2px;
 		}
 
 		&--selected {
-			border-color: var(--category-color, #a17eda);
+			border-color: var(--category-color, $color-primary);
 			background: rgba(161, 126, 218, 0.25);
+			// Solid glow tinted with the category colour (rgba() can't wrap a
+			// var/hex, so we use the colour directly and let the blur soften it).
 			box-shadow:
-				0 0 12px rgba(var(--category-color, #a17eda), 0.3),
-				inset 0 0 0 1px var(--category-color, #a17eda);
+				0 0 12px var(--category-color, $color-primary),
+				inset 0 0 0 1px var(--category-color, $color-primary);
 
 			&:hover {
 				background: rgba(161, 126, 218, 0.35);
@@ -345,12 +414,12 @@ body {
 	}
 
 	&__label {
-		font-family: 'Roboto Condensed', sans-serif;
-		font-size: 0.9rem;
+		font-family: $font-heading;
+		font-size: 0.875rem;
 		font-weight: bold;
 		text-transform: uppercase;
 		letter-spacing: 0.05rem;
-		color: #c1b2dd;
+		color: $color-text-muted;
 	}
 }
 
@@ -364,27 +433,27 @@ body {
 	gap: 0.25rem;
 	padding: 0.75rem 1.25rem;
 	background: rgba(106, 85, 138, 0.3);
-	border: 1px solid #6a558a;
+	border: 1px solid $color-surface;
 	border-radius: 8px;
 
 	&__label {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 0.75rem;
 		text-transform: uppercase;
 		letter-spacing: 0.05rem;
-		color: #9082a3;
+		color: $color-text-dim;
 	}
 
 	&__value {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 1.25rem;
 		font-weight: bold;
-		color: #f8e59c;
+		color: $color-gold;
 
 		&:not([data-has-score]) {
 			font-size: 0.875rem;
 			font-weight: normal;
-			color: #c1b2dd;
+			color: $color-text-muted;
 		}
 	}
 }
@@ -397,14 +466,19 @@ body {
 	align-items: center;
 	justify-content: center;
 	gap: 0.5rem;
-	font-family: 'Roboto Condensed', sans-serif;
+	font-family: $font-heading;
 	font-size: 1.25rem;
 	font-weight: bold;
 	text-transform: uppercase;
 	letter-spacing: 0.1rem;
 	padding: 0.75rem 1.5rem;
-	background: linear-gradient(135deg, #f8e59c 0%, #f5a76c 50%, #e781fb 100%);
-	color: #2c203d;
+	background: linear-gradient(
+		135deg,
+		$color-gold 0%,
+		$color-warning 50%,
+		$color-accent 100%
+	);
+	color: $color-ink-soft;
 	border-radius: 24px;
 	box-shadow:
 		0 4px 16px rgba(231, 129, 251, 0.4),
@@ -419,10 +493,14 @@ body {
 	max-width: 40rem;
 	margin: 2rem auto;
 	padding: 2rem;
-	background: linear-gradient(180deg, #a17eda 0%, #895fc4 100%);
-	color: #191321;
+	background: linear-gradient(
+		180deg,
+		$color-panel-start 0%,
+		$color-panel-end 100%
+	);
+	color: $color-text;
 	border-radius: 8px;
-	box-shadow: 1px 1px 8px 1px rgba(0, 0, 0, 0.6);
+	box-shadow: $shadow-panel;
 
 	img {
 		display: block;
@@ -432,40 +510,40 @@ body {
 		margin: 0 auto 1rem auto;
 		padding: 1rem;
 		filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
-		border: 2px solid #3a2353;
+		border: 2px solid $color-primary;
 		border-radius: 50%;
-		background: #c18cfa;
+		background: $color-surface-deeper;
 	}
 
 	h2 {
-		font-family: 'Roboto', sans-serif;
+		font-family: $font-body;
 		font-size: 3rem;
 		text-align: center;
 		margin: 0;
 		text-transform: uppercase;
-		color: #3a2353;
+		color: $color-text;
 	}
 
 	.question {
 		margin: 0.25rem 0;
 		font-size: 1rem;
-		color: #30273a;
+		color: $color-text-muted;
 	}
 
 	.user-answer {
 		margin: 0.25rem 0;
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-weight: bold;
-		color: #251e2f;
+		color: $color-text;
 
 		&.correct {
-			color: #054e37;
+			color: $color-success;
 		}
 		&.wrong {
-			color: #730b4b;
+			color: $color-danger;
 		}
 		&.skipped {
-			color: #d1baf2;
+			color: $color-text-muted;
 			font-weight: normal;
 		}
 	}
@@ -477,7 +555,7 @@ body {
 	width: 60%;
 	margin: 2rem auto;
 	padding-bottom: 2rem;
-	border-bottom: 2px solid #594276;
+	border-bottom: 2px solid $color-surface;
 
 	p {
 		flex: 1;
@@ -487,16 +565,16 @@ body {
 	}
 
 	.number {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 3rem;
-		color: #594276;
+		color: $color-primary;
 	}
 
 	.text {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		text-transform: uppercase;
-		font-size: 0.8rem;
-		color: #30273a;
+		font-size: 0.75rem;
+		color: $color-text-muted;
 		margin-top: -0.7rem;
 		margin-left: 0.2rem;
 		letter-spacing: 0.1rem;
@@ -510,15 +588,15 @@ body {
 		justify-content: center;
 		gap: 0.5rem;
 		margin-bottom: 1rem;
-		font-family: 'Roboto Condensed', sans-serif;
-		font-size: 0.9rem;
-		color: #594276;
+		font-family: $font-heading;
+		font-size: 0.875rem;
+		color: $color-text-muted;
 		text-transform: uppercase;
 		letter-spacing: 0.05rem;
 	}
 
 	&__separator {
-		color: #7a5da0;
+		color: $color-text-dim;
 	}
 
 	&__category,
@@ -527,7 +605,7 @@ body {
 	}
 
 	&__time {
-		color: #7a5da0;
+		color: $color-text-dim;
 	}
 
 	&__score {
@@ -537,30 +615,30 @@ body {
 		gap: 0.25rem;
 		margin: 1.5rem 0;
 		padding: 1rem 2rem;
-		background: rgba(89, 66, 118, 0.3);
+		background: rgba(106, 85, 138, 0.3);
 		border-radius: 12px;
 	}
 
 	&__score-label {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 0.75rem;
 		text-transform: uppercase;
 		letter-spacing: 0.1rem;
-		color: #594276;
+		color: $color-text-muted;
 	}
 
 	&__score-value {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 3rem;
 		font-weight: bold;
-		color: #3a2353;
+		color: $color-text;
 		line-height: 1;
 	}
 
 	&__score-detail {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 0.875rem;
-		color: #594276;
+		color: $color-text-muted;
 	}
 
 	&__high-score {
@@ -580,14 +658,14 @@ body {
 		}
 
 		h3 {
-			font-family: 'Roboto Condensed', sans-serif;
+			font-family: $font-heading;
 			font-size: 1rem;
 			margin: 0 auto;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			background: #2c203d;
-			color: #d8cde8;
+			background: $color-primary;
+			color: $color-ink;
 			width: 2rem;
 			height: 2rem;
 			border-radius: 50%;
@@ -596,14 +674,14 @@ body {
 		.question {
 			margin: 0.25rem 0;
 			font-size: 1rem;
-			color: #30273a;
+			color: $color-text-muted;
 		}
 
 		.correct-answer {
 			margin: 0.25rem 0;
-			font-family: 'Roboto Condensed', sans-serif;
-			font-size: 0.85rem;
-			color: #054e37;
+			font-family: $font-heading;
+			font-size: 0.875rem;
+			color: $color-success;
 			font-style: italic;
 		}
 	}
@@ -611,21 +689,9 @@ body {
 	&__actions {
 		margin-top: 2rem;
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: center;
 		gap: 1rem;
-	}
-}
-
-/* Override high score display colours for the summary screen */
-#summary .high-score-display {
-	background: rgba(89, 66, 118, 0.4);
-	border-color: #7a5da0;
-
-	&__label {
-		color: #594276;
-	}
-	&__value {
-		color: #3a2353;
 	}
 }
 
@@ -636,27 +702,35 @@ body {
 	max-width: 50rem;
 	margin: auto;
 	padding: 2rem;
-	background: linear-gradient(180deg, #3e2a60 0%, #321061 100%);
+	background: linear-gradient(
+		180deg,
+		$color-panel-start 0%,
+		$color-panel-end 100%
+	);
 	border-radius: 8px;
-	box-shadow: 1px 1px 8px 4px rgba(12, 5, 32, 0.6);
+	box-shadow: $shadow-panel;
 	text-align: center;
 
 	&__title {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 2rem;
 		font-weight: bold;
 		margin: 0 0 0.5rem 0;
 		text-transform: uppercase;
-		background: linear-gradient(90deg, #e781fb 40%, #8e76fa 60%);
+		background: linear-gradient(
+			90deg,
+			$color-accent 40%,
+			$color-primary-bright 60%
+		);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
 	}
 
 	&__subtitle {
-		font-family: 'Roboto', sans-serif;
+		font-family: $font-body;
 		font-size: 1rem;
-		color: #c1b2dd;
+		color: $color-text-muted;
 		margin: 0 0 2rem 0;
 	}
 
@@ -675,16 +749,16 @@ body {
 	}
 
 	&__hint {
-		font-family: 'Roboto Condensed', sans-serif;
-		font-size: 0.85rem;
-		color: #9082a3;
+		font-family: $font-heading;
+		font-size: 0.875rem;
+		color: $color-text-dim;
 		margin: 0;
 	}
 
 	&__error {
-		font-family: 'Roboto', sans-serif;
-		font-size: 0.9rem;
-		color: #f55a98;
+		font-family: $font-body;
+		font-size: 0.875rem;
+		color: $color-danger;
 		background: rgba(245, 90, 152, 0.1);
 		border: 1px solid rgba(245, 90, 152, 0.3);
 		border-radius: 8px;
@@ -693,9 +767,9 @@ body {
 	}
 
 	&__warning {
-		font-family: 'Roboto', sans-serif;
-		font-size: 0.85rem;
-		color: #f5a76c;
+		font-family: $font-body;
+		font-size: 0.875rem;
+		color: $color-warning;
 		background: rgba(245, 167, 108, 0.1);
 		border: 1px solid rgba(245, 167, 108, 0.3);
 		border-radius: 8px;
@@ -715,10 +789,10 @@ body {
 	margin: 1.5rem 0;
 
 	h3 {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 1rem;
 		text-transform: uppercase;
-		color: #9082a3;
+		color: $color-text-dim;
 		margin: 0 0 1rem 0;
 		letter-spacing: 0.05rem;
 	}
@@ -741,7 +815,7 @@ body {
 		justify-content: center;
 		gap: 0.25rem;
 		padding: 1rem 1.5rem;
-		border: 2px solid #6a558a;
+		border: 2px solid $color-surface;
 		border-radius: 12px;
 		background: rgba(106, 85, 138, 0.2);
 		cursor: pointer;
@@ -752,22 +826,22 @@ body {
 		flex: 1;
 
 		&:hover {
-			border-color: #a17eda;
+			border-color: $color-primary;
 			background: rgba(106, 85, 138, 0.35);
 			transform: translateY(-2px);
 		}
 
 		&:focus {
-			outline: 2px solid #e781fb;
+			outline: 2px solid $color-accent;
 			outline-offset: 2px;
 		}
 
 		&--selected {
-			border-color: #a17eda;
+			border-color: $color-primary;
 			background: rgba(161, 126, 218, 0.25);
 			box-shadow:
 				0 0 12px rgba(161, 126, 218, 0.3),
-				inset 0 0 0 1px #a17eda;
+				inset 0 0 0 1px $color-primary;
 
 			&:hover {
 				background: rgba(161, 126, 218, 0.35);
@@ -776,18 +850,18 @@ body {
 	}
 
 	&__label {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 1rem;
 		font-weight: bold;
 		text-transform: uppercase;
 		letter-spacing: 0.05rem;
-		color: #c1b2dd;
+		color: $color-text-muted;
 	}
 
 	&__info {
-		font-family: 'Roboto', sans-serif;
+		font-family: $font-body;
 		font-size: 0.75rem;
-		color: #9082a3;
+		color: $color-text-dim;
 	}
 }
 
@@ -798,10 +872,10 @@ body {
 	margin: 1.5rem 0;
 
 	h3 {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 1rem;
 		text-transform: uppercase;
-		color: #9082a3;
+		color: $color-text-dim;
 		margin: 0 0 1rem 0;
 		letter-spacing: 0.05rem;
 	}
@@ -814,13 +888,13 @@ body {
 	}
 
 	&__option {
-		font-family: 'Roboto Condensed', sans-serif;
-		font-size: 0.85rem;
+		font-family: $font-heading;
+		font-size: 0.875rem;
 		padding: 0.5rem 1rem;
-		border: 1px solid #6a558a;
-		border-radius: 20px;
+		border: 1px solid $color-surface;
+		border-radius: 24px;
 		background: rgba(106, 85, 138, 0.2);
-		color: #c1b2dd;
+		color: $color-text-muted;
 		cursor: pointer;
 		transition:
 			border-color 0.2s ease-in-out,
@@ -828,19 +902,19 @@ body {
 		text-transform: capitalize;
 
 		&:hover {
-			border-color: #9082a3;
+			border-color: $color-text-dim;
 			background: rgba(106, 85, 138, 0.35);
 		}
 
 		&:focus {
-			outline: 2px solid #e781fb;
+			outline: 2px solid $color-accent;
 			outline-offset: 2px;
 		}
 
 		&--selected {
-			border-color: #8e76fa;
+			border-color: $color-primary-bright;
 			background: rgba(142, 118, 250, 0.3);
-			color: #ebe7ef;
+			color: $color-text;
 
 			&:hover {
 				background: rgba(142, 118, 250, 0.4);
@@ -849,9 +923,9 @@ body {
 	}
 
 	&__warning {
-		font-family: 'Roboto', sans-serif;
-		font-size: 0.85rem;
-		color: #f5a76c;
+		font-family: $font-body;
+		font-size: 0.875rem;
+		color: $color-warning;
 		margin: 0.75rem 0 0 0;
 	}
 }
@@ -881,13 +955,17 @@ body {
 		}
 
 		h1 {
-			font-family: 'Roboto Condensed', sans-serif;
+			font-family: $font-heading;
 			font-weight: bold;
 			font-size: 1.75rem;
 			letter-spacing: 0.3rem;
 			margin: 0;
 			text-transform: uppercase;
-			background: linear-gradient(90deg, #e781fb 40%, #8e76fa 60%);
+			background: linear-gradient(
+				90deg,
+				$color-accent 40%,
+				$color-primary-bright 60%
+			);
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
 			background-clip: text;
@@ -908,17 +986,21 @@ body {
 	max-width: 50rem;
 	margin: auto;
 	padding: 2rem;
-	background: linear-gradient(180deg, #3e2a60 0%, #321061 100%);
+	background: linear-gradient(
+		180deg,
+		$color-panel-start 0%,
+		$color-panel-end 100%
+	);
 	border-radius: 8px;
-	box-shadow: 1px 1px 8px 4px rgba(12, 5, 32, 0.6);
+	box-shadow: $shadow-panel;
 	text-align: center;
 
 	.question__text {
-		font-family: 'Roboto', sans-serif;
+		font-family: $font-body;
 		font-size: 1.5rem;
 		font-weight: normal;
 		margin: 0.5rem 0 2.5rem 0;
-		color: #c1b2dd;
+		color: $color-text-muted;
 	}
 }
 
@@ -939,14 +1021,14 @@ body {
 	}
 
 	&__seconds {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 1.25rem;
 		font-weight: bold;
-		color: #c1b2dd;
+		color: $color-text-muted;
 		transition: color 0.3s ease-in-out;
 
 		&--warning {
-			color: #f55a98;
+			color: $color-danger;
 			animation: timer-pulse 0.5s ease-in-out infinite;
 		}
 	}
@@ -968,9 +1050,9 @@ body {
    Question Progress
    ======================================== */
 .question-progress {
-	font-family: 'Roboto Condensed', sans-serif;
-	font-size: 0.9rem;
-	color: #9082a3;
+	font-family: $font-heading;
+	font-size: 0.875rem;
+	color: $color-text-dim;
 	text-transform: uppercase;
 	letter-spacing: 0.05rem;
 	margin-bottom: 0.5rem;
@@ -980,12 +1062,12 @@ body {
    Confetti fallback text (canvas-confetti unavailable)
    ======================================== */
 .confetti-fallback {
-	font-family: 'Roboto Condensed', sans-serif;
+	font-family: $font-heading;
 	font-size: 1.5rem;
 	font-weight: bold;
 	text-transform: uppercase;
 	letter-spacing: 0.1rem;
-	color: #f8e59c;
+	color: $color-gold;
 	text-align: center;
 	margin: 1rem 0;
 	animation: celebration-glow 1.5s ease-in-out infinite;
@@ -1020,9 +1102,13 @@ body {
 		max-width: 32rem;
 		text-align: center;
 		padding: 2rem;
-		background: linear-gradient(180deg, #3e2a60 0%, #321061 100%);
+		background: linear-gradient(
+			180deg,
+			$color-panel-start 0%,
+			$color-panel-end 100%
+		);
 		border-radius: 12px;
-		box-shadow: 1px 1px 8px 4px rgba(12, 5, 32, 0.6);
+		box-shadow: $shadow-panel;
 	}
 
 	&__icon {
@@ -1032,27 +1118,27 @@ body {
 	}
 
 	&__title {
-		font-family: 'Roboto Condensed', sans-serif;
+		font-family: $font-heading;
 		font-size: 1.5rem;
 		font-weight: bold;
 		text-transform: uppercase;
-		color: #f55a98;
+		color: $color-danger;
 		margin: 0 0 0.5rem 0;
 	}
 
 	&__message {
-		font-family: 'Roboto', sans-serif;
+		font-family: $font-body;
 		font-size: 1rem;
-		color: #c1b2dd;
+		color: $color-text-muted;
 		margin: 0 0 1.5rem 0;
 	}
 
 	&__details {
 		margin: 1.5rem 0;
 		text-align: left;
-		font-family: 'Roboto', sans-serif;
-		font-size: 0.85rem;
-		color: #9082a3;
+		font-family: $font-body;
+		font-size: 0.875rem;
+		color: $color-text-dim;
 
 		summary {
 			cursor: pointer;
@@ -1076,7 +1162,7 @@ body {
 		overflow-x: auto;
 		white-space: pre-wrap;
 		word-break: break-word;
-		color: #f55a98;
+		color: $color-danger;
 		max-height: 12rem;
 		overflow-y: auto;
 	}
@@ -1201,7 +1287,7 @@ body {
 
 	.btn-answer {
 		padding: 1rem 1.25rem;
-		font-size: 0.95rem;
+		font-size: 0.875rem;
 	}
 
 	.progress-bar {
@@ -1225,7 +1311,7 @@ body {
 	.start-screen,
 	#summary {
 		padding: 1rem;
-		border-radius: 6px;
+		border-radius: 8px;
 	}
 
 	.header {
@@ -1258,7 +1344,7 @@ body {
 		font-size: 1.5rem;
 	}
 	.category-selector__label {
-		font-size: 0.8rem;
+		font-size: 0.75rem;
 	}
 
 	.quiz-screen .question__text {
@@ -1309,7 +1395,7 @@ body {
 
 	.topic-filter {
 		h3 {
-			font-size: 0.85rem;
+			font-size: 0.875rem;
 		}
 
 		&__options {
@@ -1318,7 +1404,7 @@ body {
 
 		&__option {
 			padding: 0.4rem 0.75rem;
-			font-size: 0.8rem;
+			font-size: 0.75rem;
 		}
 	}
 
@@ -1327,7 +1413,7 @@ body {
 	}
 
 	.difficulty-selector__info {
-		font-size: 0.7rem;
+		font-size: 0.75rem;
 	}
 
 	/* Hide keyboard number hints on very small screens */
@@ -1344,7 +1430,7 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 [role='button']:focus-visible {
-	outline: 2px solid #e781fb;
+	outline: 2px solid $color-accent;
 	outline-offset: 2px;
 }
 
@@ -1375,7 +1461,7 @@ select:focus-visible,
 	}
 
 	.progress-bar {
-		border: 1px solid #c1b2dd;
+		border: 1px solid $color-text-muted;
 	}
 }
 

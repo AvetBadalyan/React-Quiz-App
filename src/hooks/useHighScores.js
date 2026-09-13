@@ -1,33 +1,29 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { storageService } from '../services/storageService.js'
 import { calculateScore } from '../utils/scoring.js'
 
 /**
- * Hook for managing high scores.
- * Uses calculateScore from scoring.js to avoid duplicating the formula.
- *
- * @returns {{ getHighScore, checkAndSaveHighScore, lastSaveResult }}
+ * Hook for reading and saving quiz high scores.
+ * Delegates persistence to storageService and reuses calculateScore
+ * so the scoring formula lives in one place.
  */
 export function useHighScores() {
-	const [lastSaveResult, setLastSaveResult] = useState(null)
-
-	const getHighScore = useCallback((category, difficulty) => {
-		return storageService.getHighScore(category, difficulty)
-	}, [])
+	const getHighScore = useCallback(
+		(category, difficulty) => storageService.getHighScore(category, difficulty),
+		[]
+	)
 
 	const checkAndSaveHighScore = useCallback(
 		(category, difficulty, correctCount, totalCount) => {
 			const score = calculateScore(correctCount, totalCount)
-			const isNewRecord = storageService.saveHighScore(category, difficulty, {
+			return storageService.saveHighScore(category, difficulty, {
 				score,
 				correctCount,
 				totalCount
 			})
-			setLastSaveResult({ isNewRecord, score })
-			return isNewRecord
 		},
 		[]
 	)
 
-	return { getHighScore, checkAndSaveHighScore, lastSaveResult }
+	return { getHighScore, checkAndSaveHighScore }
 }

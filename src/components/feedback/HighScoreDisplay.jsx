@@ -5,8 +5,6 @@
  * @param {Object} props
  * @param {Object|null} props.highScore - High score entry { score, correctCount, totalCount }
  * @returns {JSX.Element} High score display element
- *
- * @requirements 8.4, 8.7, Accessibility best practices
  */
 export function HighScoreDisplay({ highScore }) {
 	if (!highScore) {

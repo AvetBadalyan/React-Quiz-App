@@ -5,21 +5,14 @@ import { Component } from 'react'
  */
 function ErrorFallback({ error, errorInfo, onReset, onReload }) {
 	return (
-		<div
-			className="error-boundary"
-			role="alert"
-			aria-live="assertive"
-		>
+		<div className="error-boundary" role="alert" aria-live="assertive">
 			<div className="error-boundary__content">
-				<div
-					className="error-boundary__icon"
-					aria-hidden="true"
-				>
+				<div className="error-boundary__icon" aria-hidden="true">
 					⚠️
 				</div>
 				<h2 className="error-boundary__title">Something went wrong</h2>
 				<p className="error-boundary__message">
-					We're sorry, but an unexpected error occurred. Please try again.
+					Something unexpected happened. Please try again.
 				</p>
 
 				{import.meta.env.DEV && error && (
@@ -102,5 +95,3 @@ export class ErrorBoundary extends Component {
 		)
 	}
 }
-
-export default ErrorBoundary

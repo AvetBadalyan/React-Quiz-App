@@ -6,12 +6,11 @@ import {
 	useState
 } from 'react'
 import { soundManager } from '../services/soundManager.js'
-import { storageService } from '../services/storageService.js'
+import { STORAGE_KEYS, storageService } from '../services/storageService.js'
 
 const SoundContext = createContext(null)
 
-// Keep this in sync with STORAGE_KEYS.SOUND_ENABLED in storageService.js
-const SOUND_ENABLED_KEY = 'soundEnabled'
+const SOUND_ENABLED_KEY = STORAGE_KEYS.SOUND_ENABLED
 
 /**
  * SoundProvider — manages sound enabled/disabled state with localStorage persistence
@@ -35,16 +34,10 @@ export function SoundProvider({ children }) {
 		storageService.set(SOUND_ENABLED_KEY, enabled)
 	}, [enabled])
 
-	const playCorrect = useCallback(
-		() => soundManager.play('correct', 'high'),
-		[]
-	)
-	const playWrong = useCallback(() => soundManager.play('wrong', 'high'), [])
-	const playWarning = useCallback(
-		() => soundManager.play('warning', 'normal'),
-		[]
-	)
-	const playClick = useCallback(() => soundManager.play('click', 'low'), [])
+	const playCorrect = useCallback(() => soundManager.play('correct'), [])
+	const playWrong = useCallback(() => soundManager.play('wrong'), [])
+	const playWarning = useCallback(() => soundManager.play('warning'), [])
+	const playClick = useCallback(() => soundManager.play('click'), [])
 
 	return (
 		<SoundContext.Provider

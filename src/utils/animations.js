@@ -6,7 +6,6 @@
  *
  * @module animations
  * @requires framer-motion
- * @requirements 7.1-7.8, 13.3 - Animation_System requirements
  */
 
 /**
@@ -17,7 +16,6 @@
  * @property {Object} initial - Initial state (fade in from below)
  * @property {Object} animate - Animated state (fully visible)
  * @property {Object} exit - Exit state (fade out upwards)
- * @requirements 7.1, 7.2, 7.8
  */
 export const pageVariants = {
 	initial: { opacity: 0, y: 20 },
@@ -48,7 +46,6 @@ export const pageTransition = {
  * @property {Object} initial - Initial state (slide in from right)
  * @property {Object} animate - Animated state (centered)
  * @property {Object} exit - Exit state (slide out to left)
- * @requirements 7.3
  */
 export const questionVariants = {
 	initial: { opacity: 0, x: 50 },
@@ -62,7 +59,6 @@ export const questionVariants = {
  *
  * @type {Object}
  * @property {Object} animate - Animation state with stagger configuration
- * @requirements 7.4
  */
 export const answersContainerVariants = {
 	animate: {
@@ -80,7 +76,6 @@ export const answersContainerVariants = {
  * @property {Object} initial - Initial state (invisible, below position)
  * @property {Object} animate - Animated state (visible)
  * @property {Object} exit - Exit state (fade out)
- * @requirements 7.4
  */
 export const answerVariants = {
 	initial: { opacity: 0, y: 20 },

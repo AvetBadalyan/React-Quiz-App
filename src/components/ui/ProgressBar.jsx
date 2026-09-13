@@ -22,8 +22,6 @@ import { motion } from 'framer-motion'
  * @example
  * // Warning state progress bar at 20%
  * <ProgressBar progress={0.2} isWarning={true} ariaLabel="Time remaining" />
- *
- * @requirements 5.1-5.3, 7.7, 13.1, 13.3 - Progress indicators with smooth animations
  */
 export function ProgressBar({
 	progress = 1,

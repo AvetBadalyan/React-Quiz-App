@@ -43,7 +43,9 @@ export function SummaryScreen() {
 		)
 		setIsNewRecord(newRecord)
 		setHighScore(getHighScore(state.category, state.difficulty))
-	}, []) // eslint-disable-line react-hooks/exhaustive-deps — intentionally runs once on mount
+		// Intentionally runs once on mount to save the score a single time.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	const totalAnswers = state.userAnswers.length
 
@@ -97,11 +99,7 @@ export function SummaryScreen() {
 				ref={screenRef}
 				tabIndex={-1}
 			>
-				<img
-					src={quizCompleteImg}
-					alt=""
-					aria-hidden="true"
-				/>
+				<img src={quizCompleteImg} alt="" aria-hidden="true" />
 				<h2 id="summary-title">Quiz Completed!</h2>
 
 				<div
@@ -109,19 +107,13 @@ export function SummaryScreen() {
 					aria-label={`${categoryLabel} quiz, ${difficultyLabel} difficulty${timeTaken ? `, completed in ${timeTaken}` : ''}`}
 				>
 					<span className="summary-screen__category">{categoryLabel}</span>
-					<span
-						className="summary-screen__separator"
-						aria-hidden="true"
-					>
+					<span className="summary-screen__separator" aria-hidden="true">
 						•
 					</span>
 					<span className="summary-screen__difficulty">{difficultyLabel}</span>
 					{timeTaken && (
 						<>
-							<span
-								className="summary-screen__separator"
-								aria-hidden="true"
-							>
+							<span className="summary-screen__separator" aria-hidden="true">
 								•
 							</span>
 							<span className="summary-screen__time">{timeTaken}</span>
@@ -131,11 +123,7 @@ export function SummaryScreen() {
 
 				{isNewRecord && <NewRecordBadge />}
 
-				<div
-					id="summary-stats"
-					role="region"
-					aria-label="Quiz statistics"
-				>
+				<div id="summary-stats" role="region" aria-label="Quiz statistics">
 					<p>
 						<span className="number">{percentages.skipped}%</span>
 						<span className="text">skipped</span>
@@ -194,10 +182,17 @@ export function SummaryScreen() {
 				<div className="summary-screen__actions">
 					<Button
 						variant="primary"
-						onClick={() => actions.resetQuiz()}
-						aria-label="Restart quiz and return to start screen"
+						onClick={() => actions.playAgain()}
+						aria-label={`Try the ${categoryLabel} ${difficultyLabel} quiz again`}
 					>
-						Restart Quiz
+						Try Again
+					</Button>
+					<Button
+						variant="secondary"
+						onClick={() => actions.resetQuiz()}
+						aria-label="Choose a different category and difficulty"
+					>
+						New Quiz
 					</Button>
 				</div>
 			</div>

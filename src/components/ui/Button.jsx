@@ -13,9 +13,7 @@ import { forwardRef } from 'react'
  * @param {string} props.className - Additional CSS classes
  * @param {Function} props.onClick - Click handler
  * @param {string} props.type - Button type (default: 'button')
- * Additional ARIA attributes are passed through to the button element
- *
- * Requirements: 12.1-12.5 (Keyboard accessibility)
+ * Additional ARIA attributes are passed through to the button element.
  */
 export const Button = forwardRef(function Button(
 	{

@@ -8,8 +8,6 @@ import { CATEGORY_CONFIG } from '../../data/constants.js'
  * @param {Object} props
  * @param {string} props.selected - Currently selected category id
  * @param {Function} props.onSelect - Handler for category selection, receives category id
- *
- * Requirements: 1.1, 1.6, 12.1-12.5 (Keyboard accessibility)
  */
 export function CategorySelector({ selected, onSelect }) {
 	const categories = Object.values(CATEGORY_CONFIG)
@@ -36,10 +34,7 @@ export function CategorySelector({ selected, onSelect }) {
 						aria-label={`${category.label} category`}
 						type="button"
 					>
-						<span
-							className="category-selector__icon"
-							aria-hidden="true"
-						>
+						<span className="category-selector__icon" aria-hidden="true">
 							{category.icon}
 						</span>
 						<span className="category-selector__label">{category.label}</span>

@@ -26,8 +26,6 @@ import { TopicFilter } from '../TopicFilter.jsx'
  * - Display high score for current selection
  * - Enable/disable start button based on selection state
  * - Manage focus for keyboard accessibility
- *
- * @requirements 1.1-1.12, 7.1, 8.7, 9.1-9.6, 12.1-12.5 (Keyboard accessibility)
  */
 export function StartScreen() {
 	const { state, actions, canStartQuiz } = useQuiz()
@@ -118,11 +116,8 @@ export function StartScreen() {
 	/**
 	 * Handle start quiz button click
 	 * Validates selection and starts the quiz with selected questions
-	 *
-	 * @requirements 1.11, 1.12
 	 */
 	const handleStartQuiz = useCallback(() => {
-		// Requirement 1.12: Prevent quiz start if selection incomplete
 		if (!canStartQuiz) {
 			setErrorMessage(
 				'Please select a category and difficulty level before starting.'
@@ -138,7 +133,6 @@ export function StartScreen() {
 			difficultyConfig.questionCount
 		)
 
-		// Requirement 2.6: Prevent session start if no questions available
 		if (questions.length === 0) {
 			setErrorMessage('No questions available for the selected configuration.')
 			return
@@ -160,8 +154,6 @@ export function StartScreen() {
 	 * Get difficulty label with timer and question count info
 	 * @param {string} diffKey - Difficulty key
 	 * @returns {Object} Difficulty display info
-	 *
-	 * @requirements 1.8, 1.9, 1.10
 	 */
 	const getDifficultyInfo = diffKey => {
 		const config = DIFFICULTY_CONFIG[diffKey]
@@ -187,13 +179,10 @@ export function StartScreen() {
 					Test your knowledge across HTML, CSS, JavaScript, and React
 				</p>
 
-				{/* Category Selection - Requirement 1.1, 1.6 */}
-				<CategorySelector
-					selected={category}
-					onSelect={handleCategorySelect}
-				/>
+				{/* Category selection */}
+				<CategorySelector selected={category} onSelect={handleCategorySelect} />
 
-				{/* Difficulty Selection - Requirement 1.2, 1.7-1.10 */}
+				{/* Difficulty selection */}
 				<div
 					className="difficulty-selector"
 					role="group"
@@ -229,7 +218,7 @@ export function StartScreen() {
 					</div>
 				</div>
 
-				{/* Topic Filter - shown when category is selected - Requirements 9.1-9.6 */}
+				{/* Topic filter — shown once a category is selected */}
 				{category && (
 					<TopicFilter
 						category={category}
@@ -239,12 +228,9 @@ export function StartScreen() {
 					/>
 				)}
 
-				{/* Insufficient Questions Warning - Requirement 9.6 */}
+				{/* Warning when the topic selection has fewer questions than needed */}
 				{showInsufficientWarning && (
-					<div
-						className="start-screen__warning"
-						role="alert"
-					>
+					<div className="start-screen__warning" role="alert">
 						<p>
 							Only {availableQuestionCount} questions available for your
 							selection. The quiz will use all {availableQuestionCount}{' '}
@@ -253,24 +239,21 @@ export function StartScreen() {
 					</div>
 				)}
 
-				{/* High Score Display - Requirement 8.7 */}
+				{/* High score for the current category + difficulty */}
 				{category && difficulty && (
 					<div className="start-screen__high-score">
 						<HighScoreDisplay highScore={highScore} />
 					</div>
 				)}
 
-				{/* Error Message - Requirement 1.12 */}
+				{/* Validation error message */}
 				{errorMessage && (
-					<div
-						className="start-screen__error"
-						role="alert"
-					>
+					<div className="start-screen__error" role="alert">
 						{errorMessage}
 					</div>
 				)}
 
-				{/* Start Quiz Button - Requirements 1.3-1.5, 1.11 */}
+				{/* Start button — enabled once category and difficulty are chosen */}
 				<div className="start-screen__actions">
 					<Button
 						variant="primary"
@@ -281,10 +264,7 @@ export function StartScreen() {
 						Start Quiz
 					</Button>
 					{!canStartQuiz && (
-						<p
-							id="start-button-hint"
-							className="start-screen__hint"
-						>
+						<p id="start-button-hint" className="start-screen__hint">
 							Select both a category and difficulty to start
 						</p>
 					)}

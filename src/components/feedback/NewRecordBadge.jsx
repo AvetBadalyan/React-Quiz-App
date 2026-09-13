@@ -7,10 +7,6 @@ import { motion } from 'framer-motion'
  * @component
  * @example
  * <NewRecordBadge />
- *
- * Requirements: 8.5, 8.6, Accessibility best practices
- * - 8.5: WHEN the Summary_Screen displays a new high score, THE Summary_Screen SHALL indicate that a new record was achieved
- * - 8.6: WHEN a high score is saved, THE Summary_Screen SHALL always trigger the new record indication
  */
 export function NewRecordBadge() {
 	return (

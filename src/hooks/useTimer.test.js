@@ -7,8 +7,6 @@
  * - Pause functionality
  * - Callback triggers
  * - Reset functionality
- *
- * Validates: Requirements 3.1-3.3, 13.1-13.5
  */
 
 import { act, renderHook } from '@testing-library/react'
@@ -204,7 +202,7 @@ describe('useTimer', () => {
 		it('should not call callbacks when paused', () => {
 			const onWarning = vi.fn()
 			const onTimeout = vi.fn()
-			const { result, rerender } = renderHook(
+			const { result } = renderHook(
 				({ isPaused }) => useTimer(1000, { onWarning, onTimeout, isPaused }),
 				{ initialProps: { isPaused: true } }
 			)
@@ -409,7 +407,7 @@ describe('useTimer', () => {
 			const onTimeout1 = vi.fn()
 			const onTimeout2 = vi.fn()
 
-			const { result, rerender } = renderHook(
+			const { rerender } = renderHook(
 				({ onTimeout }) => useTimer(2000, { onTimeout }),
 				{ initialProps: { onTimeout: onTimeout1 } }
 			)
@@ -430,8 +428,8 @@ describe('useTimer', () => {
 		})
 	})
 
-	describe('requirements compliance', () => {
-		it('should support 30 second timer for easy difficulty (Req 3.1)', () => {
+	describe('difficulty timer durations', () => {
+		it('should support a 30 second timer for easy difficulty', () => {
 			const { result } = renderHook(() => useTimer(30000))
 
 			expect(result.current.timeRemaining).toBe(30000)
@@ -443,7 +441,7 @@ describe('useTimer', () => {
 			expect(result.current.timeRemaining).toBe(0)
 		})
 
-		it('should support 20 second timer for medium difficulty (Req 3.2)', () => {
+		it('should support a 20 second timer for medium difficulty', () => {
 			const { result } = renderHook(() => useTimer(20000))
 
 			expect(result.current.timeRemaining).toBe(20000)
@@ -455,7 +453,7 @@ describe('useTimer', () => {
 			expect(result.current.timeRemaining).toBe(0)
 		})
 
-		it('should support 15 second timer for hard difficulty (Req 3.3)', () => {
+		it('should support a 15 second timer for hard difficulty', () => {
 			const { result } = renderHook(() => useTimer(15000))
 
 			expect(result.current.timeRemaining).toBe(15000)
@@ -467,7 +465,7 @@ describe('useTimer', () => {
 			expect(result.current.timeRemaining).toBe(0)
 		})
 
-		it('should trigger warning at 5000ms threshold (Req 13.1)', () => {
+		it('should trigger the warning at the 5000ms threshold', () => {
 			const onWarning = vi.fn()
 			renderHook(() =>
 				useTimer(10000, {
@@ -491,7 +489,7 @@ describe('useTimer', () => {
 			expect(onWarning).toHaveBeenCalledTimes(1)
 		})
 
-		it('should use buffer to prevent rapid state changes (Req 13.5)', () => {
+		it('should use a buffer to prevent rapid state changes', () => {
 			const { result } = renderHook(() =>
 				useTimer(5050, { warningThreshold: 5000 })
 			)

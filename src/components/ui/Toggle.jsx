@@ -20,8 +20,6 @@
  *   onChange={setEnabled}
  *   label="Sound effects"
  * />
- *
- * @requirements 10.2, 10.6 - Sound toggle button with localStorage persistence
  */
 export function Toggle({ checked, onChange, label, className }) {
 	return (

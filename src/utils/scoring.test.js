@@ -72,8 +72,16 @@ describe('scoring utilities', () => {
 		})
 
 		it('should handle null/undefined results', () => {
-			expect(calculatePercentages(null)).toEqual({ correct: 0, wrong: 0, skipped: 0 })
-			expect(calculatePercentages(undefined)).toEqual({ correct: 0, wrong: 0, skipped: 0 })
+			expect(calculatePercentages(null)).toEqual({
+				correct: 0,
+				wrong: 0,
+				skipped: 0
+			})
+			expect(calculatePercentages(undefined)).toEqual({
+				correct: 0,
+				wrong: 0,
+				skipped: 0
+			})
 		})
 
 		it('should handle missing properties with defaults', () => {

@@ -6,8 +6,6 @@
  * - Answer selection with feedback
  * - Keyboard navigation
  * - Sound effects on answer selection
- *
- * Validates: Requirements 2.3, 4.1-4.5, 7.2, 7.3, 10.3, 10.4, 12.1-12.5
  */
 
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -18,34 +16,22 @@ import { QuizScreen } from './QuizScreen'
 vi.mock('framer-motion', () => ({
 	motion: {
 		div: ({ children, className, ...props }) => (
-			<div
-				className={className}
-				data-testid="motion-div"
-			>
+			<div className={className} data-testid="motion-div" {...props}>
 				{children}
 			</div>
 		),
 		ul: ({ children, className, ...props }) => (
-			<ul
-				className={className}
-				{...props}
-			>
+			<ul className={className} {...props}>
 				{children}
 			</ul>
 		),
 		li: ({ children, className, ...props }) => (
-			<li
-				className={className}
-				{...props}
-			>
+			<li className={className} {...props}>
 				{children}
 			</li>
 		),
 		button: ({ children, className, ...props }) => (
-			<button
-				className={className}
-				{...props}
-			>
+			<button className={className} {...props}>
 				{children}
 			</button>
 		)
@@ -268,7 +254,7 @@ describe('QuizScreen', () => {
 		})
 	})
 
-	describe('keyboard shortcut hints (Req 12.4)', () => {
+	describe('keyboard shortcut hints', () => {
 		it('displays keyboard shortcut hints next to answer options', () => {
 			render(<QuizScreen />)
 
@@ -338,7 +324,7 @@ describe('QuizScreen', () => {
 		})
 	})
 
-	describe('progress indicator (Req 5.1-5.3)', () => {
+	describe('progress indicator', () => {
 		it('displays progress in "Question X of Y" format', () => {
 			render(<QuizScreen />)
 
@@ -358,7 +344,7 @@ describe('QuizScreen', () => {
 		})
 	})
 
-	describe('timer integration (Req 3.1-3.3)', () => {
+	describe('timer integration', () => {
 		it('renders timer component', () => {
 			const { container } = render(<QuizScreen />)
 

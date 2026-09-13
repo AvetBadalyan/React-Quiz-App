@@ -33,6 +33,7 @@ export const QUIZ_ACTIONS = {
 	CONFIRM_ANSWER: 'CONFIRM_ANSWER',
 	SKIP_QUESTION: 'SKIP_QUESTION',
 	NEXT_QUESTION: 'NEXT_QUESTION',
+	PLAY_AGAIN: 'PLAY_AGAIN',
 	RESET_QUIZ: 'RESET_QUIZ'
 }
 
@@ -126,6 +127,17 @@ function quizReducer(state, action) {
 			}
 		}
 
+		case QUIZ_ACTIONS.PLAY_AGAIN:
+			// Keep the same category/difficulty/topics, clear the session so the
+			// user lands on the configuring screen ready to start the same quiz.
+			return {
+				...initialState,
+				category: state.category,
+				difficulty: state.difficulty,
+				selectedTopics: state.selectedTopics,
+				status: 'configuring'
+			}
+
 		case QUIZ_ACTIONS.RESET_QUIZ:
 			return { ...initialState }
 
@@ -165,6 +177,8 @@ export function QuizProvider({ children }) {
 				dispatch({ type: QUIZ_ACTIONS.SKIP_QUESTION, timeSpent }),
 
 			nextQuestion: () => dispatch({ type: QUIZ_ACTIONS.NEXT_QUESTION }),
+
+			playAgain: () => dispatch({ type: QUIZ_ACTIONS.PLAY_AGAIN }),
 
 			resetQuiz: () => dispatch({ type: QUIZ_ACTIONS.RESET_QUIZ })
 		}),

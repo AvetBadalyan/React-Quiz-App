@@ -1,12 +1,17 @@
 /**
- * Difficulty configuration for quiz sessions
- * Each level defines timer duration, question count, and warning threshold
+ * Show the timer warning (colour + pulse + sound) when this many
+ * milliseconds remain. Shared across all difficulties.
+ */
+export const TIMER_WARNING_THRESHOLD = 5000
+
+/**
+ * Difficulty configuration for quiz sessions.
+ * Each level defines timer duration and question count.
  *
  * @typedef {Object} DifficultyConfig
  * @property {string} label - Display name for the difficulty level
  * @property {number} timerDuration - Time per question in milliseconds
  * @property {number} questionCount - Number of questions in quiz
- * @property {number} warningThreshold - Time remaining to trigger warning (ms)
  */
 
 /**
@@ -16,20 +21,17 @@ export const DIFFICULTY_CONFIG = {
 	easy: {
 		label: 'Easy',
 		timerDuration: 30000,
-		questionCount: 10,
-		warningThreshold: 5000
+		questionCount: 10
 	},
 	medium: {
 		label: 'Medium',
 		timerDuration: 20000,
-		questionCount: 15,
-		warningThreshold: 5000
+		questionCount: 15
 	},
 	hard: {
 		label: 'Hard',
 		timerDuration: 15000,
-		questionCount: 20,
-		warningThreshold: 5000
+		questionCount: 20
 	}
 }
 
@@ -77,38 +79,4 @@ export const CATEGORY_CONFIG = {
 		topics: ['hooks', 'components', 'state', 'jsx'],
 		color: '#61dafb'
 	}
-}
-
-/**
- * Get difficulty levels as an array for iteration
- * @returns {string[]} Array of difficulty level keys
- */
-export function getDifficultyLevels() {
-	return Object.keys(DIFFICULTY_CONFIG)
-}
-
-/**
- * Get categories as an array for iteration
- * @returns {string[]} Array of category keys
- */
-export function getCategories() {
-	return Object.keys(CATEGORY_CONFIG)
-}
-
-/**
- * Get configuration for a specific difficulty level
- * @param {string} difficulty - The difficulty level key
- * @returns {DifficultyConfig|null} The difficulty configuration or null if not found
- */
-export function getDifficultyConfig(difficulty) {
-	return DIFFICULTY_CONFIG[difficulty] || null
-}
-
-/**
- * Get configuration for a specific category
- * @param {string} category - The category key
- * @returns {CategoryConfig|null} The category configuration or null if not found
- */
-export function getCategoryConfig(category) {
-	return CATEGORY_CONFIG[category] || null
 }

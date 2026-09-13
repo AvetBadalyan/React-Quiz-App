@@ -47,11 +47,7 @@ export function Answers({
 					.join(' ')
 
 				return (
-					<motion.li
-						key={answer}
-						className="answer"
-						variants={answerVariants}
-					>
+					<motion.li key={answer} className="answer" variants={answerVariants}>
 						<button
 							className={buttonClass}
 							onClick={() => onSelect(answer)}
@@ -59,10 +55,7 @@ export function Answers({
 							aria-label={`Answer ${index + 1}: ${answer}`}
 							aria-pressed={isSelected}
 						>
-							<span
-								className="answer__hint"
-								aria-hidden="true"
-							>
+							<span className="answer__hint" aria-hidden="true">
 								{index + 1}
 							</span>
 							<span className="answer__text">{answer}</span>
@@ -73,5 +66,3 @@ export function Answers({
 		</motion.ul>
 	)
 }
-
-export default Answers

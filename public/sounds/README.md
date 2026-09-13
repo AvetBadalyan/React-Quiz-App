@@ -1,43 +1,25 @@
 # Sound Effects
 
-This folder contains the sound effect files for the quiz application.
+These are short, royalty-free sound effects used by the quiz. They are
+generated locally as WAV files by `scripts/generate-sounds.mjs`, so there are
+no third-party assets or licensing concerns.
 
-## Current Files
+## Files
 
-**Note:** The current sound files are minimal silent placeholders. For the best
-user experience, replace them with actual sound effects from one of the sources
-listed below.
+- `correct.wav` — cheerful rising chime when the answer is correct
+- `wrong.wav` — soft descending tone when the answer is wrong
+- `warning.wav` — subtle alert tick when the timer hits 5 seconds
+- `click.wav` — light click on category / difficulty / start buttons
 
-## Required Sound Files
+## Regenerating
 
-The following sound files are expected by the SoundManager:
+```bash
+npm run sounds
+```
 
-- `correct.mp3` - Success sound played when user selects the correct answer
-  (high priority)
-- `wrong.mp3` - Error sound played when user selects an incorrect answer (high
-  priority)
-- `warning.mp3` - Warning sound played when timer reaches 5 seconds remaining
-  (normal priority)
-- `click.mp3` - Optional button click sound (low priority)
-
-## Sound Sources
-
-You can obtain royalty-free sound effects from:
+To use your own effects instead, drop replacement files here (any browser-
+supported format works) and update the paths in
+`src/services/soundManager.js`. Good sources for royalty-free sounds:
 
 - https://freesound.org/
 - https://mixkit.co/free-sound-effects/
-- https://www.zapsplat.com/
-
-## File Format
-
-MP3 format is recommended for broad browser compatibility. Keep file sizes small
-(under 100KB each) for fast loading.
-
-## Recommended Sounds
-
-For a pleasant quiz experience, consider:
-
-- **correct.mp3**: A short, cheerful chime or ding (0.3-0.5 seconds)
-- **wrong.mp3**: A soft buzz or low tone (0.3-0.5 seconds)
-- **warning.mp3**: A subtle tick or alert tone (0.2-0.3 seconds)
-- **click.mp3**: A light tap or click sound (0.1-0.2 seconds)
