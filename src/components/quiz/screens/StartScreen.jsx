@@ -3,10 +3,7 @@ import { useQuiz } from '../../../context/QuizContext.jsx'
 import { useSound } from '../../../context/SoundContext.jsx'
 import { DIFFICULTY_CONFIG } from '../../../data/constants.js'
 import { useHighScores } from '../../../hooks/useHighScores.js'
-import {
-	countAvailableQuestions,
-	selectQuestions
-} from '../../../services/questionService.js'
+import { selectQuestions } from '../../../services/questionService.js'
 import { HighScoreDisplay } from '../../feedback/HighScoreDisplay.jsx'
 import { AnimatedPage } from '../../layout/AnimatedPage.jsx'
 import { Button } from '../../ui/Button.jsx'
@@ -14,71 +11,31 @@ import { CategorySelector } from '../CategorySelector.jsx'
 import { TopicFilter } from '../TopicFilter.jsx'
 
 /**
- * StartScreen Component
+ * StartScreen — quiz configuration screen.
  *
- * Initial view for quiz configuration. Displays category selection,
- * difficulty selection, topic filtering, and high score for current selection.
- *
- * Responsibilities:
- * - Display category selection (HTML, CSS, JavaScript, React)
- * - Display difficulty selection (Easy, Medium, Hard)
- * - Show topic filters based on selected category
- * - Display high score for current selection
- * - Enable/disable start button based on selection state
- * - Manage focus for keyboard accessibility
+ * Lets the user pick a category, difficulty, and optional topic filters
+ * before starting a quiz session. TopicFilter handles the insufficient-
+ * question warning inline, so we don't need to duplicate it here.
  */
 export function StartScreen() {
 	const { state, actions, canStartQuiz } = useQuiz()
 	const { playClick } = useSound()
 	const { getHighScore } = useHighScores()
 	const [errorMessage, setErrorMessage] = useState(null)
-	const [showInsufficientWarning, setShowInsufficientWarning] = useState(false)
 	const screenRef = useRef(null)
 
 	const { category, difficulty, selectedTopics } = state
 
-	// Focus management: focus the screen container when mounted for keyboard users
+	// Focus the container on mount so keyboard users can navigate immediately
 	useEffect(() => {
-		// Small delay to allow animation to start
-		const timer = setTimeout(() => {
-			screenRef.current?.focus()
-		}, 100)
-		return () => clearTimeout(timer)
+		const id = setTimeout(() => screenRef.current?.focus(), 100)
+		return () => clearTimeout(id)
 	}, [])
 
-	// Get high score for current selection
 	const highScore =
 		category && difficulty ? getHighScore(category, difficulty) : null
-
-	// Get the difficulty configuration for the selected difficulty
 	const difficultyConfig = difficulty ? DIFFICULTY_CONFIG[difficulty] : null
 
-	// Check if there are insufficient questions for the selected configuration
-	const availableQuestionCount = category
-		? countAvailableQuestions(category, selectedTopics)
-		: 0
-
-	const requiredQuestionCount = difficultyConfig?.questionCount || 0
-
-	// Update insufficient warning state when selection changes
-	useEffect(() => {
-		if (category && difficulty && selectedTopics.length > 0) {
-			setShowInsufficientWarning(availableQuestionCount < requiredQuestionCount)
-		} else {
-			setShowInsufficientWarning(false)
-		}
-	}, [
-		category,
-		difficulty,
-		selectedTopics,
-		availableQuestionCount,
-		requiredQuestionCount
-	])
-
-	/**
-	 * Handle category selection
-	 * @param {string} categoryId - Selected category id
-	 */
 	const handleCategorySelect = useCallback(
 		categoryId => {
 			playClick()
@@ -88,10 +45,6 @@ export function StartScreen() {
 		[actions, playClick]
 	)
 
-	/**
-	 * Handle difficulty selection
-	 * @param {string} difficultyKey - Selected difficulty key
-	 */
 	const handleDifficultySelect = useCallback(
 		difficultyKey => {
 			playClick()
@@ -101,10 +54,6 @@ export function StartScreen() {
 		[actions, playClick]
 	)
 
-	/**
-	 * Handle topic selection changes
-	 * @param {string[]} topics - New selected topics array
-	 */
 	const handleTopicsChange = useCallback(
 		topics => {
 			playClick()
@@ -113,10 +62,6 @@ export function StartScreen() {
 		[actions, playClick]
 	)
 
-	/**
-	 * Handle start quiz button click
-	 * Validates selection and starts the quiz with selected questions
-	 */
 	const handleStartQuiz = useCallback(() => {
 		if (!canStartQuiz) {
 			setErrorMessage(
@@ -125,7 +70,6 @@ export function StartScreen() {
 			return
 		}
 
-		// Get questions for the quiz
 		const questions = selectQuestions(
 			category,
 			difficulty,
@@ -150,17 +94,11 @@ export function StartScreen() {
 		playClick
 	])
 
-	/**
-	 * Get difficulty label with timer and question count info
-	 * @param {string} diffKey - Difficulty key
-	 * @returns {Object} Difficulty display info
-	 */
 	const getDifficultyInfo = diffKey => {
 		const config = DIFFICULTY_CONFIG[diffKey]
-		const timerSeconds = config.timerDuration / 1000
 		return {
 			label: config.label,
-			description: `${timerSeconds} seconds, ${config.questionCount} questions`
+			description: `${config.timerDuration / 1000} seconds, ${config.questionCount} questions`
 		}
 	}
 
@@ -179,10 +117,8 @@ export function StartScreen() {
 					Test your knowledge across HTML, CSS, JavaScript, and React
 				</p>
 
-				{/* Category selection */}
 				<CategorySelector selected={category} onSelect={handleCategorySelect} />
 
-				{/* Difficulty selection */}
 				<div
 					className="difficulty-selector"
 					role="group"
@@ -218,7 +154,7 @@ export function StartScreen() {
 					</div>
 				</div>
 
-				{/* Topic filter — shown once a category is selected */}
+				{/* TopicFilter renders its own insufficient-questions warning inline */}
 				{category && (
 					<TopicFilter
 						category={category}
@@ -228,32 +164,18 @@ export function StartScreen() {
 					/>
 				)}
 
-				{/* Warning when the topic selection has fewer questions than needed */}
-				{showInsufficientWarning && (
-					<div className="start-screen__warning" role="alert">
-						<p>
-							Only {availableQuestionCount} questions available for your
-							selection. The quiz will use all {availableQuestionCount}{' '}
-							questions instead of {requiredQuestionCount}.
-						</p>
-					</div>
-				)}
-
-				{/* High score for the current category + difficulty */}
 				{category && difficulty && (
 					<div className="start-screen__high-score">
 						<HighScoreDisplay highScore={highScore} />
 					</div>
 				)}
 
-				{/* Validation error message */}
 				{errorMessage && (
 					<div className="start-screen__error" role="alert">
 						{errorMessage}
 					</div>
 				)}
 
-				{/* Start button — enabled once category and difficulty are chosen */}
 				<div className="start-screen__actions">
 					<Button
 						variant="primary"

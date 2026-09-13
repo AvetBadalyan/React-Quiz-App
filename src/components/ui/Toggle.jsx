@@ -29,7 +29,6 @@ export function Toggle({ checked, onChange, label, className }) {
 				checked={checked}
 				onChange={e => onChange?.(e.target.checked)}
 				className="toggle__input"
-				aria-label={label}
 				role="switch"
 				aria-checked={checked}
 			/>

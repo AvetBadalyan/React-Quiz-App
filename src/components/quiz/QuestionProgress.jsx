@@ -1,25 +1,14 @@
 /**
- * QuestionProgress Component
+ * Displays the current question number out of the total.
  *
- * Displays the current question number and total questions in the quiz.
- * Shows progress in "Question X of Y" format with appropriate ARIA attributes
- * for screen reader accessibility.
- *
- * @component
- * @param {Object} props - Component props
+ * @param {Object} props
  * @param {number} props.current - Current question number (1-based)
- * @param {number} props.total - Total number of questions in the quiz
- * @returns {JSX.Element} Progress indicator element
- *
- * @example
- * <QuestionProgress current={3} total={10} />
- * // Renders: "Question 3 of 10"
+ * @param {number} props.total - Total questions in this quiz
  */
 export function QuestionProgress({ current, total }) {
 	return (
 		<div
 			className="question-progress"
-			id="question-overview"
 			role="status"
 			aria-live="polite"
 			aria-atomic="true"

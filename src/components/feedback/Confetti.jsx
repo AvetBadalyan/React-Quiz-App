@@ -14,7 +14,7 @@ const CONFETTI_COLORS = ['#9e5ef8', '#5af59d', '#f5a76c', '#f55a98']
  * @param {boolean} props.trigger - Whether to fire confetti (default: true)
  * @returns {null} This component renders nothing
  */
-export function Confetti({ trigger = true }) {
+export function Confetti({ trigger }) {
 	useEffect(() => {
 		if (!trigger) return
 

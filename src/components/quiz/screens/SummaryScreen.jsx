@@ -182,14 +182,14 @@ export function SummaryScreen() {
 				<div className="summary-screen__actions">
 					<Button
 						variant="primary"
-						onClick={() => actions.playAgain()}
+						onClick={actions.playAgain}
 						aria-label={`Try the ${categoryLabel} ${difficultyLabel} quiz again`}
 					>
 						Try Again
 					</Button>
 					<Button
 						variant="secondary"
-						onClick={() => actions.resetQuiz()}
+						onClick={actions.resetQuiz}
 						aria-label="Choose a different category and difficulty"
 					>
 						New Quiz

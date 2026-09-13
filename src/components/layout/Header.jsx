@@ -17,9 +17,9 @@ export function Header() {
 				<img src={quizLogo} alt="" aria-hidden="true" />
 				<h1>Frontend Quiz</h1>
 			</div>
-			<nav className="header__controls" aria-label="Settings">
+			<div className="header__controls">
 				<Toggle checked={enabled} onChange={setEnabled} label="Sound effects" />
-			</nav>
+			</div>
 		</header>
 	)
 }

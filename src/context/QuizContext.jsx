@@ -128,8 +128,10 @@ function quizReducer(state, action) {
 		}
 
 		case QUIZ_ACTIONS.PLAY_AGAIN:
-			// Keep the same category/difficulty/topics, clear the session so the
-			// user lands on the configuring screen ready to start the same quiz.
+			// Keep category/difficulty/topics so the user lands back on the
+			// configuration screen with their previous choices pre-filled.
+			// currentQuestionIndex is NOT reset here — it will be reset to 0
+			// by the subsequent START_QUIZ action when the user hits "Start Quiz".
 			return {
 				...initialState,
 				category: state.category,

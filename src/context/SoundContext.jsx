@@ -10,8 +10,6 @@ import { STORAGE_KEYS, storageService } from '../services/storageService.js'
 
 const SoundContext = createContext(null)
 
-const SOUND_ENABLED_KEY = STORAGE_KEYS.SOUND_ENABLED
-
 /**
  * SoundProvider — manages sound enabled/disabled state with localStorage persistence
  * and exposes playback helpers for the four sound types.
@@ -20,7 +18,7 @@ const SOUND_ENABLED_KEY = STORAGE_KEYS.SOUND_ENABLED
  */
 export function SoundProvider({ children }) {
 	const [enabled, setEnabled] = useState(() =>
-		storageService.get(SOUND_ENABLED_KEY, false)
+		storageService.get(STORAGE_KEYS.SOUND_ENABLED, false)
 	)
 
 	// Pre-load audio files once on mount
@@ -31,7 +29,7 @@ export function SoundProvider({ children }) {
 	// Keep soundManager and localStorage in sync whenever enabled changes
 	useEffect(() => {
 		soundManager.setEnabled(enabled)
-		storageService.set(SOUND_ENABLED_KEY, enabled)
+		storageService.set(STORAGE_KEYS.SOUND_ENABLED, enabled)
 	}, [enabled])
 
 	const playCorrect = useCallback(() => soundManager.play('correct'), [])
