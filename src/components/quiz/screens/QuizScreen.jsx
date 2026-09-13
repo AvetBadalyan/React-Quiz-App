@@ -42,8 +42,9 @@ export function QuizScreen() {
 		return shuffle(currentQuestion.answers)
 	}, [currentQuestion?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-	const timerDuration =
-		DIFFICULTY_CONFIG[state.difficulty]?.timerDuration ?? 20000
+	// Optional chaining guards the render that happens before the
+	// "no current question" early return below (e.g. between quizzes).
+	const timerDuration = DIFFICULTY_CONFIG[state.difficulty]?.timerDuration
 	const correctAnswer = currentQuestion?.answers[0]
 
 	// Focus the container on mount so keyboard navigation works immediately
@@ -58,11 +59,19 @@ export function QuizScreen() {
 		setShowFeedback(false)
 		questionStartTime.current = Date.now()
 
-		return () => clearTimeout(feedbackTimerRef.current)
+		return () => {
+			clearTimeout(feedbackTimerRef.current)
+			feedbackTimerRef.current = null
+		}
 	}, [currentQuestion?.id])
 
 	const advanceAfterFeedback = useCallback(() => {
+		// Guard against scheduling twice: a click and the timer's onTimeout can
+		// both fire in the same tick. Only the first schedule wins.
+		if (feedbackTimerRef.current) return
+
 		feedbackTimerRef.current = setTimeout(() => {
+			feedbackTimerRef.current = null
 			actions.nextQuestion()
 			setSelectedAnswer(null)
 			setShowFeedback(false)

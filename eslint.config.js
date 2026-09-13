@@ -39,13 +39,11 @@ export default [
 			// Props are documented with JSDoc — prop-types not needed
 			'react/prop-types': 'off',
 
-			// These new rules flag valid and idiomatic React patterns:
-			// - setState in useEffect (for derived state resets) is legitimate
-			// - ref mutation in render body is a well-established stable-ref pattern
-			// Both are addressed in the codebase correctly; the rules are too strict.
-			'react-hooks/no-direct-set-state-in-use-effect': 'off',
+			// We reset local UI state inside effects keyed on the current
+			// question / mount (e.g. clearing the selected answer when the
+			// question changes). That is a deliberate, correct pattern here, so
+			// this rule from eslint-plugin-react-hooks 7 is intentionally off.
 			'react-hooks/set-state-in-effect': 'off',
-			'react-hooks/refs': 'off',
 
 			'react-refresh/only-export-components': [
 				'warn',

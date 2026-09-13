@@ -1,12 +1,5 @@
 /**
- * Question Bank Aggregator
- *
- * Combines all category question arrays into a single interface for quiz operations.
- *
- * Exports:
- * - questionBank: Object containing all questions organized by category
- * - getAllQuestions(): Returns all questions from all categories
- * - getQuestionsByCategory(category): Returns questions for a specific category
+ * Question bank — combines each category's questions into a single lookup.
  */
 
 import cssQuestions from './css.js'
@@ -15,7 +8,7 @@ import javascriptQuestions from './javascript.js'
 import jstrickyQuestions from './jstricky.js'
 import reactQuestions from './react.js'
 
-export const questionBank = {
+const questionBank = {
 	html: htmlQuestions,
 	css: cssQuestions,
 	javascript: javascriptQuestions,
@@ -24,17 +17,9 @@ export const questionBank = {
 }
 
 /**
- * Returns all questions from all categories combined into a single array
- * @returns {Array} All questions from the question bank
- */
-export function getAllQuestions() {
-	return Object.values(questionBank).flat()
-}
-
-/**
- * Returns questions for a specific category
- * @param {string} category - The category to retrieve ('html', 'css', 'javascript', 'react')
- * @returns {Array} Questions for the specified category, or empty array if category not found
+ * Returns the questions for a category, or an empty array if unknown.
+ * @param {string} category - 'html' | 'css' | 'javascript' | 'react' | 'jstricky'
+ * @returns {Array}
  */
 export function getQuestionsByCategory(category) {
 	return questionBank[category] || []

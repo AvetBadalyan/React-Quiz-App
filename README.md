@@ -9,7 +9,7 @@ An interactive frontend developer quiz app built with React 19. Tests knowledge 
 ## Features
 
 - **5 categories** — HTML, CSS, JavaScript, React, JS Tricky (250 questions total)
-- **JS Tricky** — 155 output-prediction questions from [Lydia Hallie's javascript-questions](https://github.com/lydiahallie/javascript-questions) rendered with syntax-highlighted code blocks
+- **JS Tricky** — 155 output-prediction questions from [Lydia Hallie's javascript-questions](https://github.com/lydiahallie/javascript-questions) rendered in formatted code blocks
 - **3 difficulty levels** — Easy (30s / 10 questions), Medium (20s / 15), Hard (15s / 20)
 - **Topic filters** — focus on specific areas within each category
 - **Timed questions** — per-question countdown with visual + audio warning at 5 seconds
@@ -60,7 +60,7 @@ src/
 │   └── ui/           # Button, ProgressBar, Toggle
 ├── context/          # QuizContext (useReducer), SoundContext
 ├── data/             # constants, question bank (html/css/js/react/jstricky)
-├── hooks/            # useTimer, useHighScores, useKeyboardNavigation, useLocalStorage
+├── hooks/            # useTimer, useHighScores, useKeyboardNavigation
 ├── services/         # questionService, storageService, soundManager
 └── utils/            # animations, scoring, shuffle
 ```

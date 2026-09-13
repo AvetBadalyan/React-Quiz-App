@@ -36,14 +36,14 @@ export const DIFFICULTY_CONFIG = {
 }
 
 /**
- * Category configuration for quiz categories
- * Each category has an id, label, icon, available topics, and theme color
+ * Category configuration for quiz categories.
+ * Topics are not listed here — they are derived from the actual questions
+ * via getTopicsForCategory() so the two can never drift apart.
  *
  * @typedef {Object} CategoryConfig
  * @property {string} id - Category identifier
  * @property {string} label - Display name for the category
  * @property {string} icon - Emoji icon for the category
- * @property {string[]} topics - Available topic filters within the category
  * @property {string} color - Theme color for the category (hex)
  */
 
@@ -55,46 +55,30 @@ export const CATEGORY_CONFIG = {
 		id: 'html',
 		label: 'HTML',
 		icon: '🌐',
-		topics: ['forms', 'semantics', 'accessibility', 'media'],
 		color: '#e44d26'
 	},
 	css: {
 		id: 'css',
 		label: 'CSS',
 		icon: '🎨',
-		topics: ['selectors', 'flexbox', 'grid', 'animations'],
 		color: '#264de4'
 	},
 	javascript: {
 		id: 'javascript',
 		label: 'JavaScript',
 		icon: '⚡',
-		topics: ['closures', 'promises', 'dom', 'arrays'],
 		color: '#f7df1e'
 	},
 	react: {
 		id: 'react',
 		label: 'React',
 		icon: '⚛️',
-		topics: ['hooks', 'components', 'state', 'jsx'],
 		color: '#61dafb'
 	},
 	jstricky: {
 		id: 'jstricky',
 		label: 'JS Tricky',
 		icon: '🧠',
-		topics: [
-			'scope',
-			'prototype',
-			'types',
-			'arrays',
-			'event-loop',
-			'promises',
-			'this',
-			'es6',
-			'hoisting',
-			'closures'
-		],
 		color: '#f0a500'
 	}
 }

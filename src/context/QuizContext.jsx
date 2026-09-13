@@ -117,6 +117,10 @@ function quizReducer(state, action) {
 		case QUIZ_ACTIONS.NEXT_QUESTION: {
 			const nextIndex = state.currentQuestionIndex + 1
 			const isComplete = nextIndex >= state.questions.length
+			// On completion we intentionally keep currentQuestionIndex on the
+			// last question (do NOT advance past the end). SummaryScreen maps
+			// userAnswers back to questions by index, so the index must stay in
+			// range. Advancing here would push it out of bounds.
 			return {
 				...state,
 				status: isComplete ? 'completed' : 'active',
