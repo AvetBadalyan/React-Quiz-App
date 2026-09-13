@@ -29,8 +29,12 @@ export function useTimer(duration, options = {}) {
 	const timeoutTriggeredRef = useRef(false)
 
 	// Keep refs up to date without restarting the interval
-	onTimeoutRef.current = onTimeout
-	onWarningRef.current = onWarning
+	useEffect(() => {
+		onTimeoutRef.current = onTimeout
+	})
+	useEffect(() => {
+		onWarningRef.current = onWarning
+	})
 
 	// A 100ms buffer makes isWarning true slightly before the exact threshold,
 	// preventing a one-tick flicker where the warning state is missed.

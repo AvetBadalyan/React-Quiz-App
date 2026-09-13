@@ -35,7 +35,7 @@ function createResizeObserver() {
 		disconnect: () => {}
 	}
 }
-global.ResizeObserver = function () {
+globalThis.ResizeObserver = function () {
 	return createResizeObserver()
 }
 
@@ -54,6 +54,6 @@ function createMockAudio() {
 	}
 	return audio
 }
-global.Audio = function () {
+globalThis.Audio = function () {
 	return createMockAudio()
 }

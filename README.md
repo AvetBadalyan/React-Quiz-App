@@ -2,7 +2,7 @@
 
 An interactive frontend developer quiz app built with React 19. Tests knowledge across HTML, CSS, JavaScript, and React with timed questions, difficulty levels, and high score tracking.
 
-**[Live Demo →](https://react--quiz-app.web.app)**
+**[Live Demo →](https://frontend-interview-quiz.vercel.app)**
 
 ![Frontend Quiz screenshot](./src/assets/screenshot.jpg)
 

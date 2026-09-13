@@ -27,9 +27,14 @@ export function QuizScreen() {
 	const [showFeedback, setShowFeedback] = useState(false)
 	const [selectedAnswer, setSelectedAnswer] = useState(null)
 
-	const questionStartTime = useRef(Date.now())
+	const questionStartTime = useRef(0)
 	const feedbackTimerRef = useRef(null)
 	const screenRef = useRef(null)
+
+	// Initialise questionStartTime on mount
+	useEffect(() => {
+		questionStartTime.current = Date.now()
+	}, [])
 
 	// Shuffle answers once per question (not on every render)
 	const shuffledAnswers = useMemo(() => {
